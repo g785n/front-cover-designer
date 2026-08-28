@@ -53,3 +53,11 @@ Applying the **Sunrise** recipe now removes the locked full-cover starter photog
 Adding **Bubbles** places a restrained translucent six-circle cluster over the gradient, selects it, and exposes editable colour, outline, weight, position, dimensions, rotation, opacity, locking, duplication, deletion, and layer-order controls. Export completes with the confirmation that the background was produced at exactly 1,066 × 735 pixels.
 
 The downloaded gradient-and-bubbles PNG was inspected independently: it is an RGBA PNG measuring exactly **1,066 × 735 pixels**, visibly contains the selected linear gradient and translucent bubble cluster, and excludes editor selection boxes, rulers, and controls. The final compact desktop render retains the independent Backgrounds scrollbar and the revised four-tool workflow. The production build completed successfully after transforming 1,626 modules.
+
+## Report Palette URL Integration
+
+A fully parameterised report URL successfully inherited all ten supplied colours: primary, text contrast, positive, average, negative, and chart accents 1–5. Cover Studio identifies the connection as **“10 URL colours connected,”** displays each value as a named swatch, and initializes a text-free linear background using the inherited primary and first chart accent. The Colours drawer also exposes four report-aware recipes—Brand blend, Chart blend, Rating blend, and Primary glow—plus a copyable URL action and concise parameter guidance.
+
+The selected bubble cluster was successfully recoloured from the report palette using the inherited positive rating colour, updating both fill and outline to `#2E9C6A` while preserving the primary-to-accent background. The downloaded `report-palette-background.png` is a clean RGBA PNG measuring exactly **1,066 × 735 pixels** and contains no editor guides. The production build succeeds, and no browser errors occurred after the complete integration loaded.
+
+Validation was also tested with `primary=NOTHEX&contrast=%23fff&accent1=abc`. The invalid primary value was ignored and safely fell back to `#173B72`, while the encoded-hash and three-digit values normalized to `#FFFFFF` and `#AABBCC`. The editor therefore reported only the two valid inherited values. The **Copy palette URL** action completed and changed its state to **“Example URL copied.”**

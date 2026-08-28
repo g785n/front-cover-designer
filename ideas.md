@@ -69,6 +69,7 @@ The wordmark combines a high-contrast editorial serif for “Cover” with a com
 - The editor creates **background artwork only** because the destination platform adds report titles and other document text automatically.
 - Users can add photographs, logos, rectangles, circles, lines, rings, arches, waves, dot fields, and subtle bubble clusters; move, resize, rotate, layer, duplicate, and delete them; choose solid or gradient backgrounds; and export a PNG.
 - A small set of image-led, gradient, and geometric starter compositions demonstrates the tool without locking the user into templates.
+- Report colour schemes can travel in the URL using `primary`, `contrast`, `positive`, `average`, `negative`, and `accent1` through `accent5`; valid values are inherited into named swatches, gradients, and element colouring while missing or invalid values fall back safely.
 
 ## Style Decisions
 

@@ -1,6 +1,7 @@
-/** Editorial Workshop: creation tools now focus on background imagery, gradients, and quiet geometric accents. */
-import { Circle, ImagePlus, LayoutTemplate, Minus, Palette, RectangleHorizontal, Shapes, Upload } from "lucide-react";
-import { STUDIO_ASSETS, backgroundToCss, type CoverBackground, type CoverTemplate, type ShapeKind } from "@/lib/cover-editor";
+/** Editorial Workshop: creation tools now focus on background imagery, report-driven colour, gradients, and quiet geometric accents. */
+import { useState } from "react";
+import { Check, Circle, Copy, ImagePlus, LayoutTemplate, Minus, Palette, RectangleHorizontal, Shapes, Upload } from "lucide-react";
+import { REPORT_PALETTE_LABELS, STUDIO_ASSETS, backgroundToCss, reportPaletteQuery, type CoverBackground, type CoverElement, type CoverTemplate, type ReportPalette, type ShapeKind } from "@/lib/cover-editor";
 
 export type StudioPanel = "templates" | "images" | "shapes" | "brand";
 
@@ -8,11 +9,15 @@ type StudioSidebarProps = {
   panel: StudioPanel;
   templates: CoverTemplate[];
   background: CoverBackground;
+  reportPalette: ReportPalette;
+  inheritedColourCount: number;
+  selectedElement?: CoverElement;
   onPanelChange: (panel: StudioPanel) => void;
   onTemplate: (template: CoverTemplate) => void;
   onAddShape: (kind: ShapeKind) => void;
   onUpload: (file: File, kind: "photo" | "logo") => void;
   onBackground: (background: CoverBackground) => void;
+  onApplyReportColour: (color: string) => void;
 };
 
 const tools: Array<{ id: StudioPanel; label: string; icon: typeof Shapes }> = [
@@ -37,7 +42,8 @@ const elementChoices: Array<{ kind: ShapeKind; name: string }> = [
   { kind: "bubbles", name: "Bubbles" }, { kind: "dots", name: "Dot field" },
 ];
 
-export default function StudioSidebar({ panel, templates, background, onPanelChange, onTemplate, onAddShape, onUpload, onBackground }: StudioSidebarProps) {
+export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
+  const [copied, setCopied] = useState(false);
   const chooseFile = (kind: "photo" | "logo") => {
     const input = document.createElement("input");
     input.type = "file";
@@ -47,6 +53,19 @@ export default function StudioSidebar({ panel, templates, background, onPanelCha
   };
 
   const setMode = (mode: CoverBackground["mode"]) => onBackground({ ...background, mode, color2: background.color2 || "#173B72" });
+  const reportGradientPresets: Array<{ name: string; value: CoverBackground }> = [
+    { name: "Brand blend", value: { mode: "linear", color1: reportPalette.primary, color2: reportPalette.accent1, angle: 135 } },
+    { name: "Chart blend", value: { mode: "linear", color1: reportPalette.accent2, color2: reportPalette.accent5, angle: 120 } },
+    { name: "Rating blend", value: { mode: "linear", color1: reportPalette.positive, color2: reportPalette.average, angle: 145 } },
+    { name: "Primary glow", value: { mode: "radial", color1: reportPalette.contrast, color2: reportPalette.primary, angle: 0 } },
+  ];
+
+  const copyPaletteUrl = async () => {
+    const url = `${window.location.origin}${window.location.pathname}?${reportPaletteQuery(reportPalette)}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
 
   return (
     <aside className="studio-sidebar">
@@ -87,6 +106,17 @@ export default function StudioSidebar({ panel, templates, background, onPanelCha
 
         {panel === "brand" && <>
           <div className="drawer-heading"><p>Build a colour atmosphere</p><h2>Background</h2></div>
+          <div className={`palette-connection ${inheritedColourCount > 0 ? "connected" : "fallback"}`}>
+            <span><i />{inheritedColourCount > 0 ? `${inheritedColourCount} URL colours connected` : "Using example report palette"}</span>
+            <small>{inheritedColourCount > 0 ? "Valid values from the report URL are ready below." : "Add URL parameters to replace these fallback colours."}</small>
+          </div>
+          <p className="control-label report-palette-label">Report palette</p>
+          <div className="report-palette-grid">
+            {REPORT_PALETTE_LABELS.map(({ key, label }) => <button key={key} onClick={() => onApplyReportColour(reportPalette[key])} title={`Apply ${label}`}>
+              <i style={{ background: reportPalette[key] }} /><span><b>{label}</b><small>{reportPalette[key]}</small></span>
+            </button>)}
+          </div>
+          <p className="palette-action-hint">Click a colour to apply it to {selectedElement?.type === "shape" ? "the selected element" : "the background"}.</p>
           <div className="property-field"><span>Treatment</span><div className="segment-control text-segments gradient-mode">
             {(["solid", "linear", "radial"] as const).map((mode) => <button key={mode} className={background.mode === mode ? "active" : ""} onClick={() => setMode(mode)}>{mode === "solid" ? "Solid" : mode === "linear" ? "Linear" : "Radial"}</button>)}
           </div></div>
@@ -95,9 +125,12 @@ export default function StudioSidebar({ panel, templates, background, onPanelCha
             {background.mode !== "solid" && <label className="colour-field full-colour-field"><span>Second colour</span><span className="colour-input-wrap"><input type="color" value={background.color2} onChange={(event) => onBackground({ ...background, color2: event.target.value })} /><code>{background.color2.toUpperCase()}</code></span></label>}
           </div>
           {background.mode === "linear" && <label className="range-field gradient-angle"><span>Direction <b>{background.angle}°</b></span><input type="range" min="0" max="360" value={background.angle} onChange={(event) => onBackground({ ...background, angle: Number(event.target.value) })} /></label>}
+          <p className="control-label">Report recipes</p>
+          <div className="gradient-presets report-recipes">{reportGradientPresets.map((preset) => <button key={preset.name} onClick={() => onBackground({ ...preset.value })}><i style={{ background: backgroundToCss(preset.value) }} /><span>{preset.name}</span></button>)}</div>
           <p className="control-label">Gradient recipes</p>
           <div className="gradient-presets">{gradientPresets.map((preset) => <button key={preset.name} onClick={() => onBackground({ ...preset.value })}><i style={{ background: backgroundToCss(preset.value) }} /><span>{preset.name}</span></button>)}</div>
-          <div className="drawer-note"><Palette size={17} /><p>Gradients are rendered directly into the final PNG at full cover size.</p></div>
+          <button className="copy-palette-url" onClick={copyPaletteUrl}>{copied ? <Check size={15} /> : <Copy size={15} />}{copied ? "Example URL copied" : "Copy palette URL"}</button>
+          <div className="drawer-note"><Palette size={17} /><p>URL keys: primary, contrast, positive, average, negative, and accent1–accent5. Use six-digit hex without #.</p></div>
         </>}
       </section>
     </aside>

@@ -1,12 +1,14 @@
 /** Editorial Workshop: the inspector now stays focused on imagery, geometry, and background production controls. */
 import { ArrowDown, ArrowUp, Copy, Lock, Trash2, Unlock } from "lucide-react";
-import { COVER_HEIGHT, COVER_WIDTH, backgroundToCss, type CoverBackground, type CoverElement } from "@/lib/cover-editor";
+import { COVER_HEIGHT, COVER_WIDTH, REPORT_PALETTE_LABELS, backgroundToCss, type CoverBackground, type CoverElement, type ReportPalette } from "@/lib/cover-editor";
 
 type PropertiesPanelProps = {
   element?: CoverElement;
   elements: CoverElement[];
   background: CoverBackground;
+  reportPalette: ReportPalette;
   onUpdate: (patch: Partial<CoverElement>) => void;
+  onApplyReportColour: (color: string) => void;
   onSelect: (id: string) => void;
   onDuplicate: () => void;
   onDelete: () => void;
@@ -15,7 +17,7 @@ type PropertiesPanelProps = {
 
 const NumberField = ({ label, value, onChange, min }: { label: string; value: number; onChange: (value: number) => void; min?: number }) => <label className="number-field"><span>{label}</span><input type="number" min={min} value={Math.round(value)} onChange={(event) => onChange(Number(event.target.value))} /></label>;
 
-export default function PropertiesPanel({ element, elements, background, onUpdate, onSelect, onDuplicate, onDelete, onReorder }: PropertiesPanelProps) {
+export default function PropertiesPanel({ element, elements, background, reportPalette, onUpdate, onApplyReportColour, onSelect, onDuplicate, onDelete, onReorder }: PropertiesPanelProps) {
   const strokeOnly = element?.shape && ["line", "ring", "arc", "wave"].includes(element.shape);
   return (
     <aside className="properties-panel">
@@ -35,6 +37,9 @@ export default function PropertiesPanel({ element, elements, background, onUpdat
         </div>}
 
         {element?.type === "shape" && <div className="property-stack">
+          <div className="property-field"><span>Report palette</span><div className="inspector-palette">
+            {REPORT_PALETTE_LABELS.map(({ key, label }) => <button key={key} title={label} aria-label={`Apply ${label}`} style={{ background: reportPalette[key] }} onClick={() => onApplyReportColour(reportPalette[key])} />)}
+          </div></div>
           {!strokeOnly && <label className="colour-field"><span>Element colour</span><span className="colour-input-wrap"><input type="color" value={element.fill || "#F04E30"} onChange={(event) => onUpdate({ fill: event.target.value, stroke: element.shape === "bubbles" ? event.target.value : element.stroke })} /><code>{(element.fill || "#F04E30").toUpperCase()}</code></span></label>}
           {(strokeOnly || element.shape === "bubbles" || element.shape === "rectangle" || element.shape === "ellipse") && <label className="colour-field"><span>{strokeOnly ? "Line colour" : "Outline colour"}</span><span className="colour-input-wrap"><input type="color" value={element.stroke || "#20211F"} onChange={(event) => onUpdate({ stroke: event.target.value })} /><code>{(element.stroke || "#20211F").toUpperCase()}</code></span></label>}
           {element.shape !== "dots" && <NumberField label={strokeOnly ? "Line weight" : "Outline weight"} min={0} value={element.strokeWidth || 0} onChange={(strokeWidth) => onUpdate({ strokeWidth })} />}

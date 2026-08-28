@@ -212,11 +212,31 @@
   .gradient-mode { margin-bottom: 4px; }
   .gradient-colours { display: grid; gap: 0; }
   .gradient-angle { margin-top: 17px; }
+  .palette-connection { border: 1px solid var(--hairline); background: #fffdf8; padding: 10px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 5px; }
+  .palette-connection > span { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; }
+  .palette-connection > span i { width: 7px; height: 7px; border-radius: 50%; background: #9b948a; }
+  .palette-connection.connected { border-color: rgba(45,138,100,.42); background: rgba(45,138,100,.055); }
+  .palette-connection.connected > span { color: #276f53; }
+  .palette-connection.connected > span i { background: #2d8a64; box-shadow: 0 0 0 3px rgba(45,138,100,.12); }
+  .palette-connection small { color: #777168; font-size: 9px; line-height: 1.4; }
+  .report-palette-label { margin-top: 0; }
+  .report-palette-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .report-palette-grid button { min-width: 0; height: 40px; display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 7px; border: 1px solid var(--hairline); background: #fffdf8; padding: 4px; text-align: left; color: var(--ink); transition: border-color 150ms, transform 150ms; }
+  .report-palette-grid button:hover { border-color: var(--vermilion); transform: translateY(-1px); }
+  .report-palette-grid button > i { width: 30px; height: 30px; border: 1px solid rgba(32,33,31,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .report-palette-grid button > span { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .report-palette-grid b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
+  .report-palette-grid small { color: #7b756d; font: 600 7px/1 "DM Sans"; letter-spacing: .02em; }
+  .palette-action-hint { margin: 8px 0 18px; color: #787168; font-size: 9px; line-height: 1.45; }
   .gradient-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .gradient-presets button { border: 1px solid var(--hairline); background: #fffdf8; padding: 5px; display: flex; flex-direction: column; gap: 6px; text-align: left; color: var(--ink); transition: border-color 150ms, transform 150ms; }
   .gradient-presets button:hover { border-color: var(--vermilion); transform: translateY(-1px); }
   .gradient-presets i { width: 100%; aspect-ratio: 1.8; display: block; border: 1px solid rgba(32,33,31,.09); }
   .gradient-presets span { font-size: 9px; font-weight: 700; padding: 0 2px 2px; }
+  .report-recipes button { border-color: rgba(23,59,114,.2); }
+  .copy-palette-url { width: 100%; height: 38px; margin-top: 16px; border: 1px solid var(--ink); background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 10px; font-weight: 700; transition: transform 150ms, background 150ms; }
+  .copy-palette-url:hover { background: var(--cobalt); }
+  .copy-palette-url:active { transform: scale(.97); }
 
   .pasteboard { min-width: 0; background-color: #dcd8d1; background-image: radial-gradient(rgba(32, 33, 31, 0.12) 0.65px, transparent 0.65px); background-size: 5px 5px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
   .pasteboard::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 40%); pointer-events: none; }
@@ -294,6 +314,9 @@
   .background-summary > span { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .background-summary small { color: #777168; font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .background-summary strong { overflow: hidden; text-overflow: ellipsis; font-size: 9px; white-space: nowrap; }
+  .inspector-palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .inspector-palette button { aspect-ratio: 1; border: 1px solid rgba(32,33,31,.18); box-shadow: inset 0 0 0 2px rgba(255,255,255,.28); transition: transform 140ms, outline-color 140ms; outline: 2px solid transparent; outline-offset: 1px; }
+  .inspector-palette button:hover { transform: translateY(-2px); outline-color: var(--vermilion); }
   .object-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .object-actions button, .layer-move button { min-height: 34px; border: 1px solid var(--hairline); background: #fffdf8; display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 9px; font-weight: 600; }
   .object-actions button:hover, .layer-move button:hover { border-color: var(--vermilion); }

@@ -12,6 +12,7 @@ import {
   cloneElements,
   createTemplates,
   makeId,
+  readReportPaletteFromUrl,
   type CoverBackground,
   type CoverElement,
   type CoverTemplate,
@@ -83,14 +84,19 @@ const downloadSvgAsPng = async (svg: SVGSVGElement, filename: string) => {
 export default function Home() {
   const templates = useMemo(() => createTemplates(), []);
   const firstTemplate = templates[1];
+  const reportPaletteResult = useMemo(() => readReportPaletteFromUrl(window.location.search), []);
+  const hasReportPalette = reportPaletteResult.inheritedCount > 0;
+  const initialBackground = useMemo<CoverBackground>(() => hasReportPalette
+    ? { mode: "linear", color1: reportPaletteResult.palette.primary, color2: reportPaletteResult.palette.accent1, angle: 135 }
+    : { ...firstTemplate.background }, [firstTemplate.background, hasReportPalette, reportPaletteResult.palette]);
   const [panel, setPanel] = useState<StudioPanel>("templates");
-  const [elements, setElements] = useState<CoverElement[]>(() => cloneElements(firstTemplate.elements));
-  const [background, setBackground] = useState<CoverBackground>(() => ({ ...firstTemplate.background }));
+  const [elements, setElements] = useState<CoverElement[]>(() => hasReportPalette ? [] : cloneElements(firstTemplate.elements));
+  const [background, setBackground] = useState<CoverBackground>(() => initialBackground);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(78);
   const [showGrid, setShowGrid] = useState(false);
   const [showSafeZone, setShowSafeZone] = useState(false);
-  const [documentName, setDocumentName] = useState("New perspective");
+  const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : "New perspective");
   const [isExporting, setIsExporting] = useState(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const selectedElement = elements.find((element) => element.id === selectedId);
@@ -116,6 +122,17 @@ export default function Home() {
       element.height === COVER_HEIGHT
     )));
     setSelectedId(null);
+  };
+
+  const applyReportColour = (color: string) => {
+    if (selectedElement?.type === "shape") {
+      const strokeOnly = selectedElement.shape && ["line", "ring", "arc", "wave"].includes(selectedElement.shape);
+      updateSelected(strokeOnly ? { stroke: color } : { fill: color, ...(selectedElement.shape === "bubbles" ? { stroke: color } : {}) });
+      toast.success("Report colour applied to the selected element.");
+      return;
+    }
+    changeBackground({ ...background, color1: color, ...(background.mode === "solid" ? { color2: color } : {}) });
+    toast.success("Report colour applied to the background.");
   };
 
   const addShape = (shape: ShapeKind) => {
@@ -301,11 +318,15 @@ export default function Home() {
           panel={panel}
           templates={templates}
           background={background}
+          reportPalette={reportPaletteResult.palette}
+          inheritedColourCount={reportPaletteResult.inheritedCount}
+          selectedElement={selectedElement}
           onPanelChange={setPanel}
           onTemplate={applyTemplate}
           onAddShape={addShape}
           onUpload={uploadImage}
           onBackground={changeBackground}
+          onApplyReportColour={applyReportColour}
         />
 
         <section className="pasteboard" onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
@@ -341,7 +362,9 @@ export default function Home() {
           element={selectedElement}
           elements={elements}
           background={background}
+          reportPalette={reportPaletteResult.palette}
           onUpdate={updateSelected}
+          onApplyReportColour={applyReportColour}
           onSelect={setSelectedId}
           onDuplicate={duplicateSelected}
           onDelete={deleteSelected}

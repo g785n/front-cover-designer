@@ -17,6 +17,80 @@ export type CoverBackground = {
   angle: number;
 };
 
+export type ReportPalette = {
+  primary: string;
+  contrast: string;
+  positive: string;
+  average: string;
+  negative: string;
+  accent1: string;
+  accent2: string;
+  accent3: string;
+  accent4: string;
+  accent5: string;
+};
+
+export type ReportPaletteResult = {
+  palette: ReportPalette;
+  inheritedCount: number;
+};
+
+export const DEFAULT_REPORT_PALETTE: ReportPalette = {
+  primary: "#173B72",
+  contrast: "#FFFFFF",
+  positive: "#2D8A64",
+  average: "#E2A72E",
+  negative: "#C74736",
+  accent1: "#F04E30",
+  accent2: "#74C6C8",
+  accent3: "#8E6AAF",
+  accent4: "#E8D86A",
+  accent5: "#3F6F5E",
+};
+
+export const REPORT_PALETTE_LABELS: Array<{ key: keyof ReportPalette; label: string }> = [
+  { key: "primary", label: "Primary" },
+  { key: "contrast", label: "Text contrast" },
+  { key: "positive", label: "Positive" },
+  { key: "average", label: "Average" },
+  { key: "negative", label: "Negative" },
+  { key: "accent1", label: "Chart 1" },
+  { key: "accent2", label: "Chart 2" },
+  { key: "accent3", label: "Chart 3" },
+  { key: "accent4", label: "Chart 4" },
+  { key: "accent5", label: "Chart 5" },
+];
+
+const normaliseHex = (value: string | null) => {
+  if (!value) return null;
+  const cleaned = value.trim().replace(/^#/, "");
+  if (/^[0-9a-fA-F]{3}$/.test(cleaned)) {
+    return `#${cleaned.split("").map((character) => character.repeat(2)).join("")}`.toUpperCase();
+  }
+  if (/^[0-9a-fA-F]{6}$/.test(cleaned)) return `#${cleaned}`.toUpperCase();
+  return null;
+};
+
+export const readReportPaletteFromUrl = (search: string): ReportPaletteResult => {
+  const params = new URLSearchParams(search);
+  const palette = { ...DEFAULT_REPORT_PALETTE };
+  let inheritedCount = 0;
+  REPORT_PALETTE_LABELS.forEach(({ key }) => {
+    const parsed = normaliseHex(params.get(key));
+    if (parsed) {
+      palette[key] = parsed;
+      inheritedCount += 1;
+    }
+  });
+  return { palette, inheritedCount };
+};
+
+export const reportPaletteQuery = (palette: ReportPalette) => {
+  const params = new URLSearchParams();
+  REPORT_PALETTE_LABELS.forEach(({ key }) => params.set(key, palette[key].slice(1)));
+  return params.toString();
+};
+
 export type ElementType = "image" | "shape";
 export type ShapeKind = "rectangle" | "ellipse" | "line" | "ring" | "arc" | "wave" | "bubbles" | "dots";
 
@@ -156,4 +230,3 @@ export const createTemplates = (): CoverTemplate[] => [
 ];
 
 export const cloneElements = (elements: CoverElement[]) => elements.map((element) => ({ ...element, id: makeId() }));
-
