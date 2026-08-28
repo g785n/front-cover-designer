@@ -1,4 +1,4 @@
-/** Editorial Workshop: shared cover types and starter compositions use print-led naming and restrained geometry. */
+/** Editorial Workshop: background-only compositions combine print-led colour fields, imagery, and restrained geometry. */
 export const COVER_WIDTH = 1066;
 export const COVER_HEIGHT = 735;
 
@@ -9,9 +9,16 @@ export const STUDIO_ASSETS = {
   coast: "/manus-storage/editorial-coast-cover_663a6151.jpg",
 };
 
-export type ElementType = "text" | "image" | "shape";
-export type TextAlign = "left" | "center" | "right";
-export type ShapeKind = "rectangle" | "ellipse" | "line";
+export type BackgroundMode = "solid" | "linear" | "radial";
+export type CoverBackground = {
+  mode: BackgroundMode;
+  color1: string;
+  color2: string;
+  angle: number;
+};
+
+export type ElementType = "image" | "shape";
+export type ShapeKind = "rectangle" | "ellipse" | "line" | "ring" | "arc" | "wave" | "bubbles" | "dots";
 
 export type CoverElement = {
   id: string;
@@ -24,14 +31,6 @@ export type CoverElement = {
   rotation: number;
   opacity: number;
   locked?: boolean;
-  text?: string;
-  fontFamily?: string;
-  fontSize?: number;
-  fontWeight?: number;
-  color?: string;
-  align?: TextAlign;
-  letterSpacing?: number;
-  lineHeight?: number;
   src?: string;
   fit?: "cover" | "contain";
   shape?: ShapeKind;
@@ -46,7 +45,7 @@ export type CoverTemplate = {
   name: string;
   eyebrow: string;
   thumbnail?: string;
-  background: string;
+  background: CoverBackground;
   elements: CoverElement[];
 };
 
@@ -55,36 +54,13 @@ export const makeId = () =>
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-const textElement = (
-  name: string,
-  text: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  size: number,
-  color: string,
-  weight = 700,
-  family = "DM Sans",
-): CoverElement => ({
-  id: makeId(),
-  name,
-  type: "text",
-  x,
-  y,
-  width,
-  height,
-  rotation: 0,
-  opacity: 1,
-  text,
-  fontFamily: family,
-  fontSize: size,
-  fontWeight: weight,
-  color,
-  align: "left",
-  letterSpacing: 0,
-  lineHeight: 1.04,
-});
+export const backgroundToCss = (background: CoverBackground) => {
+  if (background.mode === "solid") return background.color1;
+  if (background.mode === "radial") return `radial-gradient(circle at 35% 30%, ${background.color1}, ${background.color2})`;
+  return `linear-gradient(${background.angle}deg, ${background.color1}, ${background.color2})`;
+};
+
+const background = (mode: BackgroundMode, color1: string, color2 = color1, angle = 135): CoverBackground => ({ mode, color1, color2, angle });
 
 const imageElement = (name: string, src: string): CoverElement => ({
   id: makeId(),
@@ -101,120 +77,83 @@ const imageElement = (name: string, src: string): CoverElement => ({
   locked: true,
 });
 
+const shapeElement = (
+  name: string,
+  shape: ShapeKind,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  fill: string,
+  opacity = 1,
+  stroke = fill,
+  strokeWidth = 0,
+): CoverElement => ({ id: makeId(), name, type: "shape", shape, x, y, width, height, rotation: 0, opacity, fill, stroke, strokeWidth });
+
 export const createTemplates = (): CoverTemplate[] => [
   {
     id: "blank",
     name: "Blank canvas",
     eyebrow: "Start fresh",
-    background: "#F4EFE6",
+    background: background("solid", "#F4EFE6"),
     elements: [],
   },
   {
     id: "architecture",
     name: "New Perspective",
-    eyebrow: "Editorial",
+    eyebrow: "Editorial image",
     thumbnail: STUDIO_ASSETS.architecture,
-    background: "#E9E0D3",
-    elements: [
-      imageElement("Architecture artwork", STUDIO_ASSETS.architecture),
-      {
-        ...textElement("Kicker", "ANNUAL REVIEW / 2026", 74, 66, 460, 30, 17, "#20211F", 700),
-        letterSpacing: 3.2,
-      },
-      {
-        ...textElement("Title", "A NEW\nPERSPECTIVE", 68, 124, 560, 176, 76, "#20211F", 700, "Bodoni Moda"),
-        lineHeight: 0.92,
-      },
-      textElement("Subtitle", "Ideas, progress and the shape of what comes next.", 74, 620, 460, 42, 22, "#20211F", 500),
-    ],
+    background: background("solid", "#E9E0D3"),
+    elements: [imageElement("Architecture artwork", STUDIO_ASSETS.architecture)],
   },
   {
     id: "botanical",
     name: "Natural Growth",
-    eyebrow: "Organic",
+    eyebrow: "Organic image",
     thumbnail: STUDIO_ASSETS.botanical,
-    background: "#EBE7DA",
-    elements: [
-      imageElement("Botanical artwork", STUDIO_ASSETS.botanical),
-      {
-        ...textElement("Kicker", "IMPACT REPORT", 74, 65, 420, 26, 16, "#173B30", 700),
-        letterSpacing: 4,
-      },
-      {
-        ...textElement("Title", "GROWING\nWITH PURPOSE", 72, 130, 480, 178, 65, "#173B30", 700, "Bodoni Moda"),
-        lineHeight: 0.98,
-      },
-      textElement("Year", "2026", 77, 610, 200, 55, 38, "#F04E30", 700),
-    ],
+    background: background("solid", "#EBE7DA"),
+    elements: [imageElement("Botanical artwork", STUDIO_ASSETS.botanical)],
   },
   {
     id: "coast",
     name: "Bright Horizons",
-    eyebrow: "Optimistic",
+    eyebrow: "Coastal image",
     thumbnail: STUDIO_ASSETS.coast,
-    background: "#DAD1B8",
+    background: background("solid", "#DAD1B8"),
+    elements: [imageElement("Coastal artwork", STUDIO_ASSETS.coast)],
+  },
+  {
+    id: "bubbles",
+    name: "Soft Bubbles",
+    eyebrow: "Subtle geometry",
+    background: background("radial", "#F9E9DD", "#B9D8E5", 0),
     elements: [
-      imageElement("Coastal artwork", STUDIO_ASSETS.coast),
-      {
-        ...textElement("Kicker", "OUR PLAN / 2026–2029", 65, 54, 500, 30, 16, "#183A68", 700),
-        letterSpacing: 3.4,
-      },
-      {
-        ...textElement("Title", "BRIGHTER\nHORIZONS", 62, 111, 560, 168, 72, "#183A68", 700, "Bodoni Moda"),
-        lineHeight: 0.94,
-      },
-      textElement("Subtitle", "A practical route to positive change.", 68, 624, 440, 35, 21, "#183A68", 600),
+      shapeElement("Soft bubble field", "bubbles", 470, 55, 530, 560, "#FFFFFF", 0.48),
+      shapeElement("Fine coral ring", "ring", 85, 465, 175, 175, "transparent", 0.72, "#F04E30", 8),
     ],
   },
   {
-    id: "bold",
-    name: "Bold Signal",
-    eyebrow: "Graphic",
-    background: "#F04E30",
+    id: "signal",
+    name: "Signal Field",
+    eyebrow: "Bold geometry",
+    background: background("linear", "#F04E30", "#F6C86D", 118),
     elements: [
-      {
-        id: makeId(),
-        name: "Cobalt panel",
-        type: "shape",
-        shape: "rectangle",
-        x: 665,
-        y: 0,
-        width: 401,
-        height: 735,
-        rotation: 0,
-        opacity: 1,
-        fill: "#173B72",
-        stroke: "transparent",
-        strokeWidth: 0,
-      },
-      {
-        id: makeId(),
-        name: "Cream circle",
-        type: "shape",
-        shape: "ellipse",
-        x: 753,
-        y: 220,
-        width: 220,
-        height: 220,
-        rotation: 0,
-        opacity: 1,
-        fill: "#F4EFE6",
-        stroke: "transparent",
-        strokeWidth: 0,
-      },
-      {
-        ...textElement("Kicker", "FIELD NOTES / ISSUE 08", 62, 58, 520, 30, 17, "#20211F", 700),
-        letterSpacing: 3.6,
-      },
-      {
-        ...textElement("Title", "MAKE\nROOM FOR\nBOLD IDEAS", 58, 125, 570, 300, 75, "#20211F", 700, "Bodoni Moda"),
-        lineHeight: 0.9,
-      },
-      textElement("Footer", "A collection of provocations, plans and possibilities.", 64, 635, 520, 32, 19, "#20211F", 600),
+      shapeElement("Cobalt panel", "rectangle", 690, 0, 376, 735, "#173B72"),
+      shapeElement("Ivory orbit", "ring", 748, 190, 235, 235, "transparent", 0.94, "#F4EFE6", 16),
+      shapeElement("Dot field", "dots", 70, 480, 410, 170, "#20211F", 0.33),
+    ],
+  },
+  {
+    id: "quiet-wave",
+    name: "Quiet Current",
+    eyebrow: "Gradient form",
+    background: background("linear", "#E8E2D7", "#9BC8B9", 145),
+    elements: [
+      shapeElement("Cobalt wave", "wave", 0, 310, 1066, 330, "transparent", 0.86, "#173B72", 28),
+      shapeElement("Vermilion arc", "arc", 600, 80, 390, 340, "transparent", 0.82, "#F04E30", 12),
     ],
   },
 ];
 
-export const cloneElements = (elements: CoverElement[]) =>
-  elements.map((element) => ({ ...element, id: makeId() }));
+export const cloneElements = (elements: CoverElement[]) => elements.map((element) => ({ ...element, id: makeId() }));
 

@@ -39,3 +39,17 @@ The refined application also renders coherently at **1,024 × 768**, retaining t
 ## Scrolling Correction
 
 The layouts drawer and properties inspector now receive explicit viewport-constrained heights, zero minimum heights within the parent grid, independent vertical overflow, contained overscroll, and visible thin scrollbars. At the compact verification viewport, scrolling the left drawer to its end keeps the artboard and right inspector fixed while making the complete **Bold Signal** layout card reachable.
+
+## Background-Only Revision
+
+The revised editor removes the Text tool and all text layers from starter compositions. The main workspace now labels itself **Background Artwork**, explicitly explains that the report title will be added automatically, and shows only image or geometric artwork layers. Seven starter backgrounds are available: blank, three image-led choices, Soft Bubbles, Signal Field, and Quiet Current. The independent layouts scrollbar continues to expose the complete set.
+
+The Colours drawer exposes solid, linear, and radial treatments, two editable colour stops, a 0–360° direction control for linear gradients, and six curated recipes. Applying a gradient also removes a locked full-cover starter photograph so the chosen colour treatment becomes immediately visible; user-added decorative elements remain intact.
+
+The refreshed interface consistently uses **Backgrounds**, **Elements**, **Title-safe**, and **Export background PNG** rather than text-layout terminology. The browser title and description also identify the product as a report background designer.
+
+Applying the **Sunrise** recipe now removes the locked full-cover starter photograph and immediately reveals the orange-to-gold SVG gradient, while the inspector reports zero artwork layers and the chosen colour stops. The Elements drawer visibly provides rectangle, circle, line, ring, arch, wave, bubbles, and dot-field choices with clear, distinct preview glyphs.
+
+Adding **Bubbles** places a restrained translucent six-circle cluster over the gradient, selects it, and exposes editable colour, outline, weight, position, dimensions, rotation, opacity, locking, duplication, deletion, and layer-order controls. Export completes with the confirmation that the background was produced at exactly 1,066 × 735 pixels.
+
+The downloaded gradient-and-bubbles PNG was inspected independently: it is an RGBA PNG measuring exactly **1,066 × 735 pixels**, visibly contains the selected linear gradient and translucent bubble cluster, and excludes editor selection boxes, rulers, and controls. The final compact desktop render retains the independent Backgrounds scrollbar and the revised four-tool workflow. The production build completed successfully after transforming 1,626 modules.

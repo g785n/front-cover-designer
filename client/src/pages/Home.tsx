@@ -12,8 +12,10 @@ import {
   cloneElements,
   createTemplates,
   makeId,
+  type CoverBackground,
   type CoverElement,
   type CoverTemplate,
+  type ShapeKind,
 } from "@/lib/cover-editor";
 
 const fileToDataUrl = (file: Blob) =>
@@ -83,7 +85,7 @@ export default function Home() {
   const firstTemplate = templates[1];
   const [panel, setPanel] = useState<StudioPanel>("templates");
   const [elements, setElements] = useState<CoverElement[]>(() => cloneElements(firstTemplate.elements));
-  const [background, setBackground] = useState(firstTemplate.background);
+  const [background, setBackground] = useState<CoverBackground>(() => ({ ...firstTemplate.background }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(78);
   const [showGrid, setShowGrid] = useState(false);
@@ -103,49 +105,46 @@ export default function Home() {
     setSelectedId(element.id);
   };
 
-  const addText = (kind: "title" | "subtitle" | "body") => {
-    const options = {
-      title: { name: "Title", text: "Your title", size: 70, width: 560, height: 92, family: "Bodoni Moda", weight: 700 },
-      subtitle: { name: "Subtitle", text: "Add a clear supporting line", size: 32, width: 510, height: 50, family: "DM Sans", weight: 600 },
-      body: { name: "Body copy", text: "Add a little more detail here.", size: 20, width: 430, height: 42, family: "DM Sans", weight: 400 },
-    }[kind];
-    addElement({
-      id: makeId(),
-      name: options.name,
-      type: "text",
-      x: 120,
-      y: 150,
-      width: options.width,
-      height: options.height,
-      rotation: 0,
-      opacity: 1,
-      text: options.text,
-      fontFamily: options.family,
-      fontSize: options.size,
-      fontWeight: options.weight,
-      color: "#20211F",
-      align: "left",
-      letterSpacing: 0,
-      lineHeight: 1.05,
-    });
+  const changeBackground = (nextBackground: CoverBackground) => {
+    setBackground(nextBackground);
+    setElements((current) => current.filter((element) => !(
+      element.type === "image" &&
+      element.locked &&
+      element.x === 0 &&
+      element.y === 0 &&
+      element.width === COVER_WIDTH &&
+      element.height === COVER_HEIGHT
+    )));
+    setSelectedId(null);
   };
 
-  const addShape = (shape: "rectangle" | "ellipse" | "line") => {
+  const addShape = (shape: ShapeKind) => {
+    const options: Record<ShapeKind, { name: string; x: number; y: number; width: number; height: number; fill: string; stroke: string; strokeWidth: number; opacity: number; radius?: number }> = {
+      rectangle: { name: "Rectangle", x: 170, y: 170, width: 250, height: 180, fill: "#F04E30", stroke: "#F04E30", strokeWidth: 0, opacity: 1, radius: 8 },
+      ellipse: { name: "Circle", x: 190, y: 150, width: 210, height: 210, fill: "#F04E30", stroke: "#F04E30", strokeWidth: 0, opacity: 1 },
+      line: { name: "Line", x: 170, y: 340, width: 360, height: 30, fill: "transparent", stroke: "#20211F", strokeWidth: 7, opacity: 1 },
+      ring: { name: "Ring", x: 180, y: 150, width: 230, height: 230, fill: "transparent", stroke: "#173B72", strokeWidth: 12, opacity: 0.9 },
+      arc: { name: "Arch", x: 150, y: 170, width: 390, height: 290, fill: "transparent", stroke: "#F04E30", strokeWidth: 13, opacity: 0.9 },
+      wave: { name: "Wave", x: 120, y: 250, width: 700, height: 250, fill: "transparent", stroke: "#173B72", strokeWidth: 18, opacity: 0.88 },
+      bubbles: { name: "Soft bubbles", x: 500, y: 90, width: 480, height: 470, fill: "#FFFFFF", stroke: "#FFFFFF", strokeWidth: 2, opacity: 0.52 },
+      dots: { name: "Dot field", x: 90, y: 460, width: 430, height: 190, fill: "#20211F", stroke: "#20211F", strokeWidth: 0, opacity: 0.34 },
+    };
+    const option = options[shape];
     addElement({
       id: makeId(),
-      name: shape === "ellipse" ? "Circle" : shape === "line" ? "Line" : "Rectangle",
+      name: option.name,
       type: "shape",
       shape,
-      x: 170,
-      y: 170,
-      width: shape === "line" ? 360 : 250,
-      height: shape === "line" ? 30 : 180,
+      x: option.x,
+      y: option.y,
+      width: option.width,
+      height: option.height,
       rotation: 0,
-      opacity: 1,
-      fill: "#F04E30",
-      stroke: shape === "line" ? "#20211F" : "#F04E30",
-      strokeWidth: shape === "line" ? 7 : 0,
-      radius: shape === "rectangle" ? 8 : 0,
+      opacity: option.opacity,
+      fill: option.fill,
+      stroke: option.stroke,
+      strokeWidth: option.strokeWidth,
+      radius: option.radius || 0,
     });
   };
 
@@ -178,7 +177,7 @@ export default function Home() {
           fit: kind === "logo" ? "contain" : "cover",
           radius: 0,
         });
-        toast.success(kind === "logo" ? "Logo added to the cover." : "Photo added to the cover.");
+        toast.success(kind === "logo" ? "Logo added to the background." : "Photo added to the background.");
       };
       image.src = src;
     };
@@ -187,7 +186,7 @@ export default function Home() {
 
   const applyTemplate = (template: CoverTemplate) => {
     setElements(cloneElements(template.elements));
-    setBackground(template.background);
+    setBackground({ ...template.background });
     setDocumentName(template.name);
     setSelectedId(null);
     toast.success(`${template.name} layout applied.`);
@@ -235,7 +234,7 @@ export default function Home() {
     setIsExporting(true);
     try {
       await downloadSvgAsPng(svgRef.current, documentName);
-      toast.success("Cover exported at exactly 1,066 × 735 px.");
+      toast.success("Background exported at exactly 1,066 × 735 px.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The PNG could not be generated.");
     } finally {
@@ -292,7 +291,7 @@ export default function Home() {
           <span className="size-pill"><Maximize size={15} /> 1,066 × 735 px</span>
           <button className="export-button" onClick={exportCover} disabled={isExporting}>
             {isExporting ? <Sparkles size={18} className="spin-soft" /> : <Download size={18} />}
-            {isExporting ? "Preparing cover…" : "Export cover PNG"}
+            {isExporting ? "Preparing background…" : "Export background PNG"}
           </button>
         </div>
       </header>
@@ -304,16 +303,15 @@ export default function Home() {
           background={background}
           onPanelChange={setPanel}
           onTemplate={applyTemplate}
-          onAddText={addText}
           onAddShape={addShape}
           onUpload={uploadImage}
-          onBackground={setBackground}
+          onBackground={changeBackground}
         />
 
         <section className="pasteboard" onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
           <div className="pasteboard-intro">
-            <p>FRONT COVER / LIVE ARTBOARD</p>
-            <span>Move on cover · resize at corner · rotate above</span>
+            <p>BACKGROUND ARTWORK / LIVE ARTBOARD</p>
+            <span>Your report title will be added automatically</span>
           </div>
           <div className="canvas-stage">
             <CoverCanvas
@@ -330,7 +328,7 @@ export default function Home() {
           </div>
           <div className="canvas-controls">
             <button className={showGrid ? "active" : ""} onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={16} /> Grid</button>
-            <button className={showSafeZone ? "active" : ""} onClick={() => setShowSafeZone((value) => !value)}><ShieldCheck size={16} /> Safe area</button>
+            <button className={showSafeZone ? "active" : ""} onClick={() => setShowSafeZone((value) => !value)}><ShieldCheck size={16} /> Title-safe</button>
             <span className="control-separator" />
             <button className="zoom-step" onClick={() => setZoom((value) => Math.max(45, value - 5))}>−</button>
             <input aria-label="Zoom" type="range" min="45" max="100" value={zoom} onChange={(event) => setZoom(Number(event.target.value))} />
@@ -343,7 +341,6 @@ export default function Home() {
           element={selectedElement}
           elements={elements}
           background={background}
-          onBackground={setBackground}
           onUpdate={updateSelected}
           onSelect={setSelectedId}
           onDuplicate={duplicateSelected}

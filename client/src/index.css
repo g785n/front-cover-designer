@@ -168,6 +168,13 @@
   .blank-mini { height: 100%; display: grid; place-items: center; color: #b2a999; font: 400 28px/1 "DM Sans"; }
   .bold-mini { height: 100%; display: flex; align-items: center; padding-left: 16px; font: 700 28px/1 "Bodoni Moda"; position: relative; overflow: hidden; }
   .bold-mini i { position: absolute; width: 42%; height: 100%; right: 0; background: #173b72; }
+  .bubble-mini { height: 100%; display: block; position: relative; overflow: hidden; }
+  .bubble-mini i { position: absolute; border-radius: 50%; background: rgba(255,255,255,.52); border: 1px solid rgba(255,255,255,.74); }
+  .bubble-mini i:nth-child(1) { width: 42%; aspect-ratio: 1; right: 7%; top: 5%; }
+  .bubble-mini i:nth-child(2) { width: 27%; aspect-ratio: 1; left: 18%; top: 30%; }
+  .bubble-mini i:nth-child(3) { width: 20%; aspect-ratio: 1; right: 28%; bottom: 8%; }
+  .bubble-mini i:nth-child(4) { width: 12%; aspect-ratio: 1; left: 8%; bottom: 10%; }
+  .wave-mini { height: 100%; display: grid; place-items: center; overflow: hidden; color: #173b72; font: 400 80px/1 "Bodoni Moda"; transform: rotate(-8deg) scaleX(1.5); }
 
   .text-preset { width: 100%; background: #fffdf8; border: 1px solid var(--hairline); text-align: left; padding: 15px 14px; margin-bottom: 9px; color: var(--ink); transition: border-color 150ms, transform 150ms; }
   .text-preset:hover { border-color: var(--vermilion); transform: translateX(2px); }
@@ -186,6 +193,14 @@
   .shape-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
   .shape-grid button { aspect-ratio: 1.18; border: 1px solid var(--hairline); background: #fffdf8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 11px; font-weight: 600; color: var(--ink); }
   .shape-grid button:hover { border-color: var(--vermilion); color: var(--vermilion); }
+  .element-grid button { aspect-ratio: 1.06; }
+  .shape-glyph { width: 48px; height: 38px; display: grid; place-items: center; position: relative; color: currentColor; }
+  .shape-glyph svg { width: 28px; height: 28px; }
+  .glyph-ring::before { content: ""; width: 29px; height: 29px; border: 4px solid currentColor; border-radius: 50%; }
+  .glyph-arc::before { content: ""; width: 34px; height: 22px; border: 4px solid currentColor; border-bottom: 0; border-radius: 28px 28px 0 0; }
+  .glyph-wave::before { content: "∿"; font: 700 44px/.8 "Bodoni Moda"; transform: scaleX(1.15); }
+  .glyph-bubbles { background: radial-gradient(circle at 27% 65%, currentColor 0 4px, transparent 5px), radial-gradient(circle at 68% 30%, currentColor 0 8px, transparent 9px), radial-gradient(circle at 72% 75%, currentColor 0 5px, transparent 6px), radial-gradient(circle at 35% 28%, currentColor 0 6px, transparent 7px); opacity: .78; }
+  .glyph-dots { background-image: radial-gradient(circle, currentColor 0 1.8px, transparent 2px); background-size: 11px 11px; opacity: .78; }
 
   .drawer-note { display: flex; gap: 10px; padding: 14px 0; margin-top: 18px; border-top: 1px solid var(--hairline); color: #716c65; }
   .drawer-note svg { flex: 0 0 auto; color: var(--vermilion); }
@@ -194,6 +209,14 @@
   .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .swatch-grid button { aspect-ratio: 1; border: 1px solid #cdc4b8; position: relative; }
   .swatch-grid button.selected::after { content: ""; position: absolute; inset: -4px; border: 2px solid var(--vermilion); }
+  .gradient-mode { margin-bottom: 4px; }
+  .gradient-colours { display: grid; gap: 0; }
+  .gradient-angle { margin-top: 17px; }
+  .gradient-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .gradient-presets button { border: 1px solid var(--hairline); background: #fffdf8; padding: 5px; display: flex; flex-direction: column; gap: 6px; text-align: left; color: var(--ink); transition: border-color 150ms, transform 150ms; }
+  .gradient-presets button:hover { border-color: var(--vermilion); transform: translateY(-1px); }
+  .gradient-presets i { width: 100%; aspect-ratio: 1.8; display: block; border: 1px solid rgba(32,33,31,.09); }
+  .gradient-presets span { font-size: 9px; font-weight: 700; padding: 0 2px 2px; }
 
   .pasteboard { min-width: 0; background-color: #dcd8d1; background-image: radial-gradient(rgba(32, 33, 31, 0.12) 0.65px, transparent 0.65px); background-size: 5px 5px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
   .pasteboard::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 40%); pointer-events: none; }
@@ -266,6 +289,11 @@
   .dimension-display span { display: flex; align-items: baseline; gap: 4px; font-size: 10px; color: #777168; }
   .dimension-display strong { font: 700 26px/1 "Bodoni Moda"; color: var(--ink); }
   .dimension-display i { color: var(--vermilion); font-style: normal; }
+  .background-summary { display: grid; grid-template-columns: 54px 1fr; align-items: center; gap: 11px; padding: 10px; margin-top: 16px; border: 1px solid var(--hairline); background: #fffdf8; }
+  .background-summary > i { width: 54px; height: 42px; display: block; border: 1px solid rgba(32,33,31,.12); }
+  .background-summary > span { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .background-summary small { color: #777168; font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .background-summary strong { overflow: hidden; text-overflow: ellipsis; font-size: 9px; white-space: nowrap; }
   .object-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .object-actions button, .layer-move button { min-height: 34px; border: 1px solid var(--hairline); background: #fffdf8; display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 9px; font-weight: 600; }
   .object-actions button:hover, .layer-move button:hover { border-color: var(--vermilion); }

@@ -66,8 +66,9 @@ The wordmark combines a high-contrast editorial serif for “Cover” with a com
 
 - The exported artwork is always exactly **1,066 × 735 pixels**, regardless of the editor's on-screen scale.
 - The first version is entirely browser-based and stores no user uploads remotely.
-- Users can add text, photographs, logos, rectangles, circles, and decorative lines; move, resize, rotate, layer, duplicate, and delete them; choose canvas colours; and export a PNG.
-- A small set of starter compositions demonstrates the tool without locking the user into templates.
+- The editor creates **background artwork only** because the destination platform adds report titles and other document text automatically.
+- Users can add photographs, logos, rectangles, circles, lines, rings, arches, waves, dot fields, and subtle bubble clusters; move, resize, rotate, layer, duplicate, and delete them; choose solid or gradient backgrounds; and export a PNG.
+- A small set of image-led, gradient, and geometric starter compositions demonstrates the tool without locking the user into templates.
 
 ## Style Decisions
 
