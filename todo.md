@@ -31,3 +31,12 @@
 - [x] Replace the provisional product identity while preserving editor layout, URL palettes, uploads, geometry, and PNG export.
 - [x] Verify desktop and compact layouts, a parameterised report palette URL, and exact-size export after rebranding.
 - [x] Run the production build and save a new checkpoint.
+
+# Colours-First Startup
+
+- [x] Open the editor on the Colours panel by default.
+- [x] Place Colours first and Backgrounds last in the left tool rail.
+- [x] Start without template artwork or geometric layers on a clean blank canvas.
+- [x] Preserve automatic primary-to-accent gradient initialization when valid URL colours are supplied.
+- [x] Verify plain and parameterised URLs, compact layout, panel scrolling, and exact-size PNG export.
+- [x] Run the production build and save a new checkpoint.

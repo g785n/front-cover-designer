@@ -21,10 +21,10 @@ type StudioSidebarProps = {
 };
 
 const tools: Array<{ id: StudioPanel; label: string; icon: typeof Shapes }> = [
-  { id: "templates", label: "Backgrounds", icon: LayoutTemplate },
+  { id: "brand", label: "Colours", icon: Palette },
   { id: "images", label: "Images", icon: ImagePlus },
   { id: "shapes", label: "Elements", icon: Shapes },
-  { id: "brand", label: "Colours", icon: Palette },
+  { id: "templates", label: "Backgrounds", icon: LayoutTemplate },
 ];
 
 const gradientPresets: Array<{ name: string; value: CoverBackground }> = [
@@ -105,7 +105,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
         </>}
 
         {panel === "brand" && <>
-          <div className="drawer-heading"><p>Build a colour atmosphere</p><h2>Background</h2></div>
+          <div className="drawer-heading"><p>Build a colour atmosphere</p><h2>Colours</h2></div>
           <div className={`palette-connection ${inheritedColourCount > 0 ? "connected" : "fallback"}`}>
             <span><i />{inheritedColourCount > 0 ? `${inheritedColourCount} URL colours connected` : "Using example report palette"}</span>
             <small>{inheritedColourCount > 0 ? "Valid values from the report URL are ready below." : "Add URL parameters to replace these fallback colours."}</small>

@@ -69,3 +69,9 @@ The supplied official black Boardforms SVG wordmark is rendered intact in the he
 Following an independent review, the side panels were refined with sharper editorial rules, measured grouping, stronger display hierarchy, and fewer generic rounded containers. Report-ready geometric starters—Boardroom Air, Governance Flow, and Decision Field—now precede image-led options and use Boardforms-aligned colours.
 
 Desktop and compact 1,024 × 768 renders preserve the official lockup, independently scrolling background list, dominant exact-size artboard, right-hand inspector, and parameterised report palette behavior. The exported `boardroom-air.png` is an RGBA PNG measuring exactly **1,066 × 735 pixels**. The final production build succeeds, with no browser errors recorded after rebranding.
+
+## Colours-First Startup
+
+Fresh sessions now open directly on **Colours**, which is first in the left tool rail; Images and Elements follow, and **Backgrounds** is last. A plain URL starts as **Blank canvas** with the Boardforms blue-mist solid background and zero artwork layers. A fully parameterised URL also opens on Colours, reports all ten inherited colours, applies the primary-to-accent linear gradient automatically, and still starts with zero artwork layers.
+
+The reordered workflow renders correctly at 1,024 × 768, including the independently scrollable colour drawer and complete Boardforms product lockup. The URL-driven export `report-palette-background (1).png` is an RGBA PNG measuring exactly **1,066 × 735 pixels**. The production build succeeds, and no fresh browser errors were recorded.

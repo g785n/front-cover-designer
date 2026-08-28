@@ -83,20 +83,20 @@ const downloadSvgAsPng = async (svg: SVGSVGElement, filename: string) => {
 
 export default function Home() {
   const templates = useMemo(() => createTemplates(), []);
-  const firstTemplate = templates[1];
+  const blankTemplate = templates[0];
   const reportPaletteResult = useMemo(() => readReportPaletteFromUrl(window.location.search), []);
   const hasReportPalette = reportPaletteResult.inheritedCount > 0;
   const initialBackground = useMemo<CoverBackground>(() => hasReportPalette
     ? { mode: "linear", color1: reportPaletteResult.palette.primary, color2: reportPaletteResult.palette.accent1, angle: 135 }
-    : { ...firstTemplate.background }, [firstTemplate.background, hasReportPalette, reportPaletteResult.palette]);
-  const [panel, setPanel] = useState<StudioPanel>("templates");
-  const [elements, setElements] = useState<CoverElement[]>(() => hasReportPalette ? [] : cloneElements(firstTemplate.elements));
+    : { ...blankTemplate.background }, [blankTemplate.background, hasReportPalette, reportPaletteResult.palette]);
+  const [panel, setPanel] = useState<StudioPanel>("brand");
+  const [elements, setElements] = useState<CoverElement[]>([]);
   const [background, setBackground] = useState<CoverBackground>(() => initialBackground);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(78);
   const [showGrid, setShowGrid] = useState(false);
   const [showSafeZone, setShowSafeZone] = useState(false);
-  const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : firstTemplate.name);
+  const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : blankTemplate.name);
   const [isExporting, setIsExporting] = useState(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const selectedElement = elements.find((element) => element.id === selectedId);
