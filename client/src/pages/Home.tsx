@@ -96,7 +96,7 @@ export default function Home() {
   const [zoom, setZoom] = useState(78);
   const [showGrid, setShowGrid] = useState(false);
   const [showSafeZone, setShowSafeZone] = useState(false);
-  const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : "New perspective");
+  const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : firstTemplate.name);
   const [isExporting, setIsExporting] = useState(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const selectedElement = elements.find((element) => element.id === selectedId);
@@ -294,15 +294,16 @@ export default function Home() {
     <div className="studio-app">
       <header className="studio-topbar">
         <div className="studio-brand">
-          <img src={STUDIO_ASSETS.mark} alt="Cover Studio symbol" />
-          <div><strong>Cover</strong><span>STUDIO</span></div>
+          <div className="product-name"><strong>Cover</strong><em>Studio</em></div>
+          <span className="brand-divider" />
+          <div className="boardforms-byline"><small>by</small><img src={STUDIO_ASSETS.boardformsBlack} alt="Boardforms" /></div>
         </div>
         <div className="document-meta">
           <label>
             <span className="sr-only">Cover name</span>
             <input value={documentName} onChange={(event) => setDocumentName(event.target.value)} />
           </label>
-          <span className="saved-state"><i /> Working locally</span>
+          <span className="saved-state"><i /> Boardforms report-ready</span>
         </div>
         <div className="topbar-actions">
           <span className="size-pill"><Maximize size={15} /> 1,066 × 735 px</span>

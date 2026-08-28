@@ -61,3 +61,11 @@ A fully parameterised report URL successfully inherited all ten supplied colours
 The selected bubble cluster was successfully recoloured from the report palette using the inherited positive rating colour, updating both fill and outline to `#2E9C6A` while preserving the primary-to-accent background. The downloaded `report-palette-background.png` is a clean RGBA PNG measuring exactly **1,066 × 735 pixels** and contains no editor guides. The production build succeeds, and no browser errors occurred after the complete integration loaded.
 
 Validation was also tested with `primary=NOTHEX&contrast=%23fff&accent1=abc`. The invalid primary value was ignored and safely fell back to `#173B72`, while the encoded-hash and three-digit values normalized to `#FFFFFF` and `#AABBCC`. The editor therefore reported only the two valid inherited values. The **Copy palette URL** action completed and changed its state to **“Example URL copied.”**
+
+## Boardforms Product Branding
+
+The supplied official black Boardforms SVG wordmark is rendered intact in the header alongside the **Cover Studio** product name, which now has a distinctive green crop-frame signature. Browser metadata identifies the tool as **Cover Studio by Boardforms**. The product chrome uses the authoritative Boardforms homepage system: Instrument Sans, selective Instrument Serif Italic, governance navy, blue mist surfaces, and reserved green actions.
+
+Following an independent review, the side panels were refined with sharper editorial rules, measured grouping, stronger display hierarchy, and fewer generic rounded containers. Report-ready geometric starters—Boardroom Air, Governance Flow, and Decision Field—now precede image-led options and use Boardforms-aligned colours.
+
+Desktop and compact 1,024 × 768 renders preserve the official lockup, independently scrolling background list, dominant exact-size artboard, right-hand inspector, and parameterised report palette behavior. The exported `boardroom-air.png` is an RGBA PNG measuring exactly **1,066 × 735 pixels**. The final production build succeeds, with no browser errors recorded after rebranding.

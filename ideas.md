@@ -74,3 +74,17 @@ The wordmark combines a high-contrast editorial serif for “Cover” with a com
 ## Style Decisions
 
 Measurement language is a recurring brand motif: fine crop corners, ruler ticks, and dimension numerals appear around the canvas and export-related areas rather than as generic decoration. **Bodoni Moda** is reserved for the wordmark, section headlines, and oversized editorial numerals, while **DM Sans** owns controls, labels, microcopy, and dense interface text. Utility language sounds like a calm production studio and uses short, outcome-specific phrases such as “Export cover PNG,” “Start with a layout,” and “Edit on the cover.”
+
+## Boardforms Brand Adaptation
+
+The product is branded **Cover Studio by Boardforms**. The supplied official Boardforms wordmark is used without altering its proportions. The product should feel like a focused workspace within the wider Boardforms suite rather than a separate editorial brand.
+
+The Boardforms homepage establishes **Instrument Sans** as the main product and interface typeface and **Instrument Serif Italic** for selective, human editorial emphasis. Its key colours are a deep governance navy (`oklch(0.24 0.045 250)`), a very pale blue-mist background (`oklch(0.975 0.018 235)`), a medium report blue (`oklch(0.55 0.1 230)`), and a fresh green primary accent (`oklch(0.52 0.14 161)`). Surfaces are high-key, slightly translucent, and softly rounded where they contain important actions; dense utility controls remain precise and compact.
+
+For Cover Studio, Boardforms navy replaces charcoal as the structural colour, blue mist replaces warm ivory as the surrounding workspace, and green replaces vermilion as the main action and selected-state colour. The existing production rulers and exact-output language remain because they support the tool’s purpose. Instrument Serif is reserved for section headings and the word “Studio” in the product lockup; Instrument Sans owns all editor controls.
+
+The header lockup reads **Cover Studio** with **by** followed by the Boardforms wordmark. The official black wordmark is used on light surfaces and the official white wordmark is available for dark Boardforms navy surfaces. Brand voice remains concise and evidence-led: “Report-ready background artwork” and “Built for Boardforms reporting.”
+
+### Boardforms Production-Desk Amendments
+
+Utility panels use editorial rules, measured labels, sharper grouping, and restrained corners; softly rounded containers are reserved for primary actions, connection status, and meaningful previews. Starter compositions prioritize abstract, palette-aware Boardforms report backgrounds before editorial image options. The Cover Studio name carries a small green crop-frame motif as its ownable product signature, while the official Boardforms wordmark remains unmodified.

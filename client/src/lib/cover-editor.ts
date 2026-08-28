@@ -3,7 +3,8 @@ export const COVER_WIDTH = 1066;
 export const COVER_HEIGHT = 735;
 
 export const STUDIO_ASSETS = {
-  mark: "/manus-storage/cover-studio-mark_5d7d393e.png",
+  boardformsBlack: "/manus-storage/boardforms-wordmark-black_31eeb753.svg",
+  boardformsWhite: "/manus-storage/boardforms-wordmark-white_4bf18f88.png",
   architecture: "/manus-storage/editorial-architecture-cover_e54bf533.jpg",
   botanical: "/manus-storage/editorial-botanical-cover_66b091fa.jpg",
   coast: "/manus-storage/editorial-coast-cover_663a6151.jpg",
@@ -169,13 +170,44 @@ export const createTemplates = (): CoverTemplate[] => [
     id: "blank",
     name: "Blank canvas",
     eyebrow: "Start fresh",
-    background: background("solid", "#F4EFE6"),
+    background: background("solid", "#EDF7FA"),
     elements: [],
+  },
+  {
+    id: "bubbles",
+    name: "Boardroom Air",
+    eyebrow: "Report-ready geometry",
+    background: background("radial", "#F5FBFC", "#B9DDE8", 0),
+    elements: [
+      shapeElement("Soft bubble field", "bubbles", 470, 55, 530, 560, "#FFFFFF", 0.48),
+      shapeElement("Boardforms green ring", "ring", 85, 465, 175, 175, "transparent", 0.72, "#168B68", 8),
+    ],
+  },
+  {
+    id: "quiet-wave",
+    name: "Governance Flow",
+    eyebrow: "Report-ready gradient",
+    background: background("linear", "#EAF6FA", "#9FCEDB", 145),
+    elements: [
+      shapeElement("Governance navy wave", "wave", 0, 310, 1066, 330, "transparent", 0.86, "#1E3A5F", 28),
+      shapeElement("Boardforms green arc", "arc", 600, 80, 390, 340, "transparent", 0.82, "#168B68", 12),
+    ],
+  },
+  {
+    id: "signal",
+    name: "Decision Field",
+    eyebrow: "Report-ready structure",
+    background: background("linear", "#168B68", "#8CDABF", 118),
+    elements: [
+      shapeElement("Governance navy panel", "rectangle", 690, 0, 376, 735, "#1E3A5F"),
+      shapeElement("White orbit", "ring", 748, 190, 235, 235, "transparent", 0.94, "#FFFFFF", 16),
+      shapeElement("Evidence dot field", "dots", 70, 480, 410, 170, "#172D46", 0.33),
+    ],
   },
   {
     id: "architecture",
     name: "New Perspective",
-    eyebrow: "Editorial image",
+    eyebrow: "Editorial architecture",
     thumbnail: STUDIO_ASSETS.architecture,
     background: background("solid", "#E9E0D3"),
     elements: [imageElement("Architecture artwork", STUDIO_ASSETS.architecture)],
@@ -183,7 +215,7 @@ export const createTemplates = (): CoverTemplate[] => [
   {
     id: "botanical",
     name: "Natural Growth",
-    eyebrow: "Organic image",
+    eyebrow: "Editorial image",
     thumbnail: STUDIO_ASSETS.botanical,
     background: background("solid", "#EBE7DA"),
     elements: [imageElement("Botanical artwork", STUDIO_ASSETS.botanical)],
@@ -191,41 +223,10 @@ export const createTemplates = (): CoverTemplate[] => [
   {
     id: "coast",
     name: "Bright Horizons",
-    eyebrow: "Coastal image",
+    eyebrow: "Editorial image",
     thumbnail: STUDIO_ASSETS.coast,
     background: background("solid", "#DAD1B8"),
     elements: [imageElement("Coastal artwork", STUDIO_ASSETS.coast)],
-  },
-  {
-    id: "bubbles",
-    name: "Soft Bubbles",
-    eyebrow: "Subtle geometry",
-    background: background("radial", "#F9E9DD", "#B9D8E5", 0),
-    elements: [
-      shapeElement("Soft bubble field", "bubbles", 470, 55, 530, 560, "#FFFFFF", 0.48),
-      shapeElement("Fine coral ring", "ring", 85, 465, 175, 175, "transparent", 0.72, "#F04E30", 8),
-    ],
-  },
-  {
-    id: "signal",
-    name: "Signal Field",
-    eyebrow: "Bold geometry",
-    background: background("linear", "#F04E30", "#F6C86D", 118),
-    elements: [
-      shapeElement("Cobalt panel", "rectangle", 690, 0, 376, 735, "#173B72"),
-      shapeElement("Ivory orbit", "ring", 748, 190, 235, 235, "transparent", 0.94, "#F4EFE6", 16),
-      shapeElement("Dot field", "dots", 70, 480, 410, 170, "#20211F", 0.33),
-    ],
-  },
-  {
-    id: "quiet-wave",
-    name: "Quiet Current",
-    eyebrow: "Gradient form",
-    background: background("linear", "#E8E2D7", "#9BC8B9", 145),
-    elements: [
-      shapeElement("Cobalt wave", "wave", 0, 310, 1066, 330, "transparent", 0.86, "#173B72", 28),
-      shapeElement("Vermilion arc", "arc", 600, 80, 390, 340, "transparent", 0.82, "#F04E30", 12),
-    ],
   },
 ];
 

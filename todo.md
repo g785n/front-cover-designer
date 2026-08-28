@@ -22,3 +22,12 @@
 - [x] Add palette-aware gradient recipes and one-click application to selected geometric elements.
 - [x] Provide a copyable example URL and clear fallback behaviour when parameters are missing or invalid.
 - [x] Verify a fully parameterised URL, editor usage, and exact-size PNG export before saving a checkpoint.
+
+# Boardforms Rebrand
+
+- [x] Inspect the supplied white PNG and black SVG wordmarks and prepare deployable asset URLs without altering their proportions.
+- [x] Review the Boardforms homepage for authoritative colour, typography, layout, iconography, and brand-voice cues.
+- [x] Define how “Cover Studio by Boardforms” should appear in the header, browser metadata, favicon, and supporting interface copy.
+- [x] Replace the provisional product identity while preserving editor layout, URL palettes, uploads, geometry, and PNG export.
+- [x] Verify desktop and compact layouts, a parameterised report palette URL, and exact-size export after rebranding.
+- [x] Run the production build and save a new checkpoint.

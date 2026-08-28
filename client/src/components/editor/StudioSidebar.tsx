@@ -89,7 +89,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
         {panel === "images" && <>
           <div className="drawer-heading"><p>Bring in your visual identity</p><h2>Images</h2></div>
           <button className="upload-card" onClick={() => chooseFile("photo")}><span className="upload-icon"><ImagePlus size={23} /></span><span><strong>Add a photo</strong><small>JPG, PNG, WebP or SVG</small></span><Upload size={17} /></button>
-          <button className="upload-card" onClick={() => chooseFile("logo")}><span className="upload-icon mark-icon"><img src={STUDIO_ASSETS.mark} alt="" /></span><span><strong>Add your mark</strong><small>Transparent PNG works best</small></span><Upload size={17} /></button>
+          <button className="upload-card" onClick={() => chooseFile("logo")}><span className="upload-icon mark-icon"><img src={STUDIO_ASSETS.boardformsBlack} alt="" /></span><span><strong>Add your mark</strong><small>Transparent PNG works best</small></span><Upload size={17} /></button>
           <div className="drawer-note"><ImagePlus size={17} /><p>Or drop an image onto the production desk and place it on the background.</p></div>
         </>}
 
