@@ -1,14 +1,18 @@
 /** Editorial Workshop: the inspector now stays focused on imagery, geometry, and background production controls. */
-import { ArrowDown, ArrowUp, Copy, Lock, Trash2, Unlock } from "lucide-react";
-import { COVER_HEIGHT, COVER_WIDTH, REPORT_PALETTE_LABELS, backgroundToCss, type CoverBackground, type CoverElement, type ReportPalette } from "@/lib/cover-editor";
+import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, Lock, Trash2, Unlock } from "lucide-react";
+import { COVER_HEIGHT, COVER_WIDTH, REPORT_PALETTE_LABELS, TITLE_PLACEMENTS, backgroundToCss, type CoverBackground, type CoverElement, type ReportOverlaySettings, type ReportPalette } from "@/lib/cover-editor";
 
 type PropertiesPanelProps = {
   element?: CoverElement;
   elements: CoverElement[];
   background: CoverBackground;
   reportPalette: ReportPalette;
+  overlaySettings: ReportOverlaySettings;
+  showSafeZone: boolean;
   onUpdate: (patch: Partial<CoverElement>) => void;
   onApplyReportColour: (color: string) => void;
+  onOverlayChange: (settings: ReportOverlaySettings) => void;
+  onShowSafeZoneChange: (show: boolean) => void;
   onSelect: (id: string) => void;
   onDuplicate: () => void;
   onDelete: () => void;
@@ -17,7 +21,7 @@ type PropertiesPanelProps = {
 
 const NumberField = ({ label, value, onChange, min }: { label: string; value: number; onChange: (value: number) => void; min?: number }) => <label className="number-field"><span>{label}</span><input type="number" min={min} value={Math.round(value)} onChange={(event) => onChange(Number(event.target.value))} /></label>;
 
-export default function PropertiesPanel({ element, elements, background, reportPalette, onUpdate, onApplyReportColour, onSelect, onDuplicate, onDelete, onReorder }: PropertiesPanelProps) {
+export default function PropertiesPanel({ element, elements, background, reportPalette, overlaySettings, showSafeZone, onUpdate, onApplyReportColour, onOverlayChange, onShowSafeZoneChange, onSelect, onDuplicate, onDelete, onReorder }: PropertiesPanelProps) {
   const strokeOnly = element?.shape && ["line", "ring", "arc", "wave"].includes(element.shape);
   return (
     <aside className="properties-panel">
@@ -28,6 +32,18 @@ export default function PropertiesPanel({ element, elements, background, reportP
           <p>Your report system will add the title later, so this canvas exports clean background artwork at the exact required dimensions.</p>
           <div className="background-summary"><i style={{ background: backgroundToCss(background) }} /><span><small>{background.mode} background</small><strong>{background.mode === "solid" ? background.color1.toUpperCase() : `${background.color1.toUpperCase()} → ${background.color2.toUpperCase()}`}</strong></span></div>
           <p className="inspector-hint">Use <strong>Colours</strong> to change the background treatment, or select an element to edit it here.</p>
+          <div className="overlay-settings">
+            <div className="overlay-settings-head"><span><small>Report overlay preview</small><strong>Title & date area</strong></span><button className={showSafeZone ? "active" : ""} onClick={() => onShowSafeZoneChange(!showSafeZone)}>{showSafeZone ? <Eye size={15} /> : <EyeOff size={15} />}{showSafeZone ? "Shown" : "Hidden"}</button></div>
+            <p className="control-label">Title position</p>
+            <div className="title-placement-grid">
+              {TITLE_PLACEMENTS.map(({ value, label }) => <button key={value} data-position={value} className={overlaySettings.titlePosition === value ? "active" : ""} title={label} aria-label={label} onClick={() => onOverlayChange({ ...overlaySettings, titlePosition: value })}><span className="sr-only">{label}</span></button>)}
+            </div>
+            <div className="selected-placement"><span>Selected zone</span><strong>{TITLE_PLACEMENTS.find(({ value }) => value === overlaySettings.titlePosition)?.label}</strong></div>
+            <p className="control-label">Date placement</p>
+            <div className="segment-control date-position-control"><button className={overlaySettings.datePosition === "title" ? "active" : ""} onClick={() => onOverlayChange({ ...overlaySettings, datePosition: "title" })}>In title</button><button className={overlaySettings.datePosition === "bottom-left" ? "active" : ""} onClick={() => onOverlayChange({ ...overlaySettings, datePosition: "bottom-left" })}>Bottom left</button><button className={overlaySettings.datePosition === "hidden" ? "active" : ""} onClick={() => onOverlayChange({ ...overlaySettings, datePosition: "hidden" })}>Hidden</button></div>
+            <code className="overlay-url-preview">titlePosition={overlaySettings.titlePosition}<br />datePosition={overlaySettings.datePosition}</code>
+            <p className="inspector-hint">These guides preview where Boardforms will overlay report text. They are never included in the exported background PNG.</p>
+          </div>
         </div>}
 
         {element?.type === "image" && <div className="property-stack">

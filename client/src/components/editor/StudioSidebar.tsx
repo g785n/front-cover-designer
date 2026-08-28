@@ -1,7 +1,7 @@
 /** Editorial Workshop: creation tools now focus on background imagery, report-driven colour, gradients, and quiet geometric accents. */
 import { useState } from "react";
 import { Check, Circle, Copy, ImagePlus, LayoutTemplate, Minus, Palette, RectangleHorizontal, Shapes, Upload } from "lucide-react";
-import { REPORT_PALETTE_LABELS, STUDIO_ASSETS, backgroundToCss, reportPaletteQuery, type CoverBackground, type CoverElement, type CoverTemplate, type ReportPalette, type ShapeKind } from "@/lib/cover-editor";
+import { REPORT_PALETTE_LABELS, STUDIO_ASSETS, backgroundToCss, reportConfigurationQuery, type CoverBackground, type CoverElement, type CoverTemplate, type ReportOverlaySettings, type ReportPalette, type ShapeKind } from "@/lib/cover-editor";
 
 export type StudioPanel = "templates" | "images" | "shapes" | "brand";
 
@@ -11,6 +11,7 @@ type StudioSidebarProps = {
   background: CoverBackground;
   reportPalette: ReportPalette;
   inheritedColourCount: number;
+  overlaySettings: ReportOverlaySettings;
   selectedElement?: CoverElement;
   onPanelChange: (panel: StudioPanel) => void;
   onTemplate: (template: CoverTemplate) => void;
@@ -42,7 +43,7 @@ const elementChoices: Array<{ kind: ShapeKind; name: string }> = [
   { kind: "bubbles", name: "Bubbles" }, { kind: "dots", name: "Dot field" },
 ];
 
-export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
+export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, overlaySettings, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
   const [copied, setCopied] = useState(false);
   const chooseFile = (kind: "photo" | "logo") => {
     const input = document.createElement("input");
@@ -61,7 +62,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
   ];
 
   const copyPaletteUrl = async () => {
-    const url = `${window.location.origin}${window.location.pathname}?${reportPaletteQuery(reportPalette)}`;
+    const url = `${window.location.origin}${window.location.pathname}?${reportConfigurationQuery(reportPalette, overlaySettings)}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
@@ -129,8 +130,8 @@ export default function StudioSidebar({ panel, templates, background, reportPale
           <div className="gradient-presets report-recipes">{reportGradientPresets.map((preset) => <button key={preset.name} onClick={() => onBackground({ ...preset.value })}><i style={{ background: backgroundToCss(preset.value) }} /><span>{preset.name}</span></button>)}</div>
           <p className="control-label">Gradient recipes</p>
           <div className="gradient-presets">{gradientPresets.map((preset) => <button key={preset.name} onClick={() => onBackground({ ...preset.value })}><i style={{ background: backgroundToCss(preset.value) }} /><span>{preset.name}</span></button>)}</div>
-          <button className="copy-palette-url" onClick={copyPaletteUrl}>{copied ? <Check size={15} /> : <Copy size={15} />}{copied ? "Example URL copied" : "Copy palette URL"}</button>
-          <div className="drawer-note"><Palette size={17} /><p>URL keys: primary, contrast, positive, average, negative, and accent1–accent5. Use six-digit hex without #.</p></div>
+          <button className="copy-palette-url" onClick={copyPaletteUrl}>{copied ? <Check size={15} /> : <Copy size={15} />}{copied ? "Integration URL copied" : "Copy integration URL"}</button>
+          <div className="drawer-note"><Palette size={17} /><p>The copied URL includes the report palette plus title and date placement settings.</p></div>
         </>}
       </section>
     </aside>

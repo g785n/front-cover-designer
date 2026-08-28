@@ -326,6 +326,30 @@
   .background-summary > span { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .background-summary small { color: oklch(0.48 0.035 250); font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .background-summary strong { overflow: hidden; text-overflow: ellipsis; font-size: 9px; white-space: nowrap; }
+  .overlay-settings { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+  .overlay-settings-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .overlay-settings-head > span { display: flex; flex-direction: column; gap: 3px; }
+  .overlay-settings-head small { color: var(--vermilion); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .overlay-settings-head strong { font: italic 21px/1 "Instrument Serif", serif; }
+  .overlay-settings-head button { height: 30px; border: 1px solid var(--hairline); background: var(--surface-hi); color: oklch(0.48 0.035 250); display: inline-flex; align-items: center; gap: 5px; padding: 0 8px; font-size: 8px; font-weight: 700; }
+  .overlay-settings-head button.active { border-color: var(--vermilion); color: oklch(0.42 0.12 161); background: oklch(0.52 0.14 161 / .06); }
+  .title-placement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .title-placement-grid button { aspect-ratio: 1.38; border: 1px solid var(--hairline); background: var(--surface-hi); position: relative; color: oklch(0.48 0.035 250); transition: border-color 140ms, background 140ms, transform 140ms; }
+  .title-placement-grid button:hover { border-color: var(--vermilion); transform: translateY(-1px); }
+  .title-placement-grid button::before { content: ""; width: 15px; height: 9px; border: 1.5px solid currentColor; position: absolute; }
+  .title-placement-grid button[data-position^="top-"]::before { top: 7px; }
+  .title-placement-grid button[data-position^="middle-"]::before { top: 50%; transform: translateY(-50%); }
+  .title-placement-grid button[data-position^="bottom-"]::before { bottom: 7px; }
+  .title-placement-grid button[data-position$="-left"]::before { left: 7px; }
+  .title-placement-grid button[data-position$="-centre"]::before { left: 50%; transform: translateX(-50%); }
+  .title-placement-grid button[data-position^="middle-"][data-position$="-centre"]::before { transform: translate(-50%, -50%); }
+  .title-placement-grid button[data-position$="-right"]::before { right: 7px; }
+  .title-placement-grid button.active { background: var(--ink); border-color: var(--ink); color: white; }
+  .title-placement-grid button.active::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--vermilion); position: absolute; right: 5px; top: 5px; }
+  .selected-placement { display: flex; justify-content: space-between; padding: 8px 0 0; font-size: 9px; }
+  .selected-placement span { color: oklch(0.48 0.035 250); }
+  .date-position-control button { font-size: 8px; padding: 0 4px; }
+  .overlay-url-preview { display: block; margin-top: 10px; padding: 8px 9px; border-left: 2px solid var(--vermilion); background: oklch(0.94 0.02 235); color: var(--ink); font: 600 8px/1.55 "Instrument Sans", sans-serif; overflow-wrap: anywhere; }
   .inspector-palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
   .inspector-palette button { aspect-ratio: 1; border: 1px solid rgba(32,33,31,.18); box-shadow: inset 0 0 0 2px rgba(255,255,255,.28); transition: transform 140ms, outline-color 140ms; outline: 2px solid transparent; outline-offset: 1px; }
   .inspector-palette button:hover { transform: translateY(-2px); outline-color: var(--vermilion); }

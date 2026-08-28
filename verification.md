@@ -75,3 +75,17 @@ Desktop and compact 1,024 × 768 renders preserve the official lockup, independe
 Fresh sessions now open directly on **Colours**, which is first in the left tool rail; Images and Elements follow, and **Backgrounds** is last. A plain URL starts as **Blank canvas** with the Boardforms blue-mist solid background and zero artwork layers. A fully parameterised URL also opens on Colours, reports all ten inherited colours, applies the primary-to-accent linear gradient automatically, and still starts with zero artwork layers.
 
 The reordered workflow renders correctly at 1,024 × 768, including the independently scrollable colour drawer and complete Boardforms product lockup. The URL-driven export `report-palette-background (1).png` is an RGBA PNG measuring exactly **1,066 × 735 pixels**. The production build succeeds, and no fresh browser errors were recorded.
+
+## Report Overlay Placement Guides
+
+The supplied report examples were catalogued as a complete 3 × 3 placement system: top, middle, and bottom crossed with left, centre, and right. A separate example verifies that the date can move from the title block to a compact bottom-left position.
+
+A fully parameterised URL with `titlePosition=bottom-right&datePosition=bottom-left` automatically enabled the title-safe preview, placed the labelled title rectangle at bottom right, and displayed a separate date/year marker at bottom left. Selecting **Top centre** in the output inspector immediately moved the guide and updated the browser URL to `titlePosition=top-centre` while preserving `datePosition=bottom-left` and the report palette.
+
+Changing the date setting to **Hidden** removed the separate date marker and updated the URL to `datePosition=hidden`. Switching back to **In title** changed the guide label to **TITLE + DATE AREA**, kept the top-centre placement, and updated the URL to `datePosition=title`. All nine named title positions and all three date modes are exposed as concise controls in Output settings.
+
+Exporting while the top-centre **TITLE + DATE AREA** guide was visible produced `report-palette-background (2).png`, an exact **1,066 × 735 pixel** RGBA PNG containing only the blue report gradient; the title rectangle, guide labels, date treatment, rulers, and editor controls were all excluded. The **Copy integration URL** action also succeeded and now packages the ten report colours together with `titlePosition` and `datePosition`.
+
+The potentially conflicting `titlePosition=bottom-left&datePosition=bottom-left` combination automatically lifts the title-safe rectangle above the dedicated date/year marker, preserving both zones without overlap. Unsupported values such as `titlePosition=unsupported&datePosition=side` are ignored: the editor falls back to **Middle left** and **In title**, keeps the preview hidden, and starts on the normal blank canvas without errors.
+
+The final production build completes successfully, and no browser errors were recorded during any completed overlay interaction after the full implementation loaded. Desktop and compact screenshots preserve the Colours-first workflow, Boardforms branding, movable guide, date marker, and independently scrollable panels.

@@ -1,6 +1,6 @@
 /** Editorial Workshop: the fixed-ratio artboard renders export-safe gradients, geometry, and imagery with direct manipulation. */
 import { type PointerEvent, type RefObject, useRef } from "react";
-import { COVER_HEIGHT, COVER_WIDTH, type CoverBackground, type CoverElement } from "@/lib/cover-editor";
+import { COVER_HEIGHT, COVER_WIDTH, getTitlePlacement, type CoverBackground, type CoverElement, type ReportOverlaySettings } from "@/lib/cover-editor";
 
 type Interaction = {
   kind: "move" | "resize" | "rotate";
@@ -18,6 +18,7 @@ type CoverCanvasProps = {
   zoom: number;
   showGrid: boolean;
   showSafeZone: boolean;
+  overlaySettings: ReportOverlaySettings;
   svgRef: RefObject<SVGSVGElement | null>;
   onSelect: (id: string | null) => void;
   onChange: (elements: CoverElement[]) => void;
@@ -25,8 +26,12 @@ type CoverCanvasProps = {
 
 const HANDLE = 10;
 
-export default function CoverCanvas({ elements, background, selectedId, zoom, showGrid, showSafeZone, svgRef, onSelect, onChange }: CoverCanvasProps) {
+export default function CoverCanvas({ elements, background, selectedId, zoom, showGrid, showSafeZone, overlaySettings, svgRef, onSelect, onChange }: CoverCanvasProps) {
   const interactionRef = useRef<Interaction | null>(null);
+  const titlePlacement = getTitlePlacement(overlaySettings.titlePosition);
+  const separatedDateCollision = overlaySettings.datePosition === "bottom-left" && overlaySettings.titlePosition === "bottom-left";
+  const titleGuideY = separatedDateCollision ? 475 : titlePlacement.y;
+  const titleGuideHeight = separatedDateCollision ? 145 : titlePlacement.height;
 
   const pointFromEvent = (event: PointerEvent<SVGElement>) => {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -152,10 +157,21 @@ export default function CoverCanvas({ elements, background, selectedId, zoom, sh
           <rect width={COVER_WIDTH} height={COVER_HEIGHT} fill={backgroundFill} />
           {elements.map(renderElement)}
           {showGrid && <g data-editor-ui="grid" opacity="0.17" pointerEvents="none">{Array.from({ length: Math.floor(COVER_WIDTH / 40) + 1 }, (_, index) => <line key={`v-${index}`} x1={index * 40} y1="0" x2={index * 40} y2={COVER_HEIGHT} stroke="#20211F" strokeWidth="1" />)}{Array.from({ length: Math.floor(COVER_HEIGHT / 40) + 1 }, (_, index) => <line key={`h-${index}`} x1="0" y1={index * 40} x2={COVER_WIDTH} y2={index * 40} stroke="#20211F" strokeWidth="1" />)}</g>}
-          {showSafeZone && <rect data-editor-ui="safe-zone" x="36" y="36" width={COVER_WIDTH - 72} height={COVER_HEIGHT - 72} fill="none" stroke="#F04E30" strokeWidth="2" strokeDasharray="10 8" pointerEvents="none" />}
+          {showSafeZone && <g data-editor-ui="safe-zone" pointerEvents="none">
+            <rect x={titlePlacement.x} y={titleGuideY} width={titlePlacement.width} height={titleGuideHeight} rx="5" fill="#168B68" fillOpacity="0.08" stroke="#172D46" strokeOpacity="0.28" strokeWidth="6" />
+            <rect x={titlePlacement.x} y={titleGuideY} width={titlePlacement.width} height={titleGuideHeight} rx="5" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="12 9" />
+            <rect x={titlePlacement.x} y={titleGuideY} width={titlePlacement.width} height={titleGuideHeight} rx="5" fill="none" stroke="#168B68" strokeWidth="2" strokeDasharray="12 9" strokeDashoffset="10" />
+            <rect x={titlePlacement.x + 12} y={titleGuideY + 12} width={overlaySettings.datePosition === "title" ? 136 : 104} height="28" rx="4" fill="#172D46" fillOpacity="0.92" />
+            <text x={titlePlacement.x + 24} y={titleGuideY + 31} fill="#FFFFFF" fontFamily="Instrument Sans, sans-serif" fontSize="12" fontWeight="700" letterSpacing="1.5">{overlaySettings.datePosition === "title" ? "TITLE + DATE AREA" : "TITLE AREA"}</text>
+            <text x={titlePlacement.x + 12} y={titleGuideY + titleGuideHeight - 14} fill="#172D46" fontFamily="Instrument Sans, sans-serif" fontSize="11" fontWeight="700" letterSpacing="1">{titlePlacement.label.toUpperCase()} · {titlePlacement.align.toUpperCase()} ALIGNED</text>
+            {overlaySettings.datePosition === "bottom-left" && <g>
+              <rect x="55" y="648" width="154" height="36" rx="4" fill="#172D46" fillOpacity="0.18" stroke="#FFFFFF" strokeWidth="3" strokeDasharray="10 7" />
+              <rect x="55" y="648" width="154" height="36" rx="4" fill="none" stroke="#168B68" strokeWidth="2" strokeDasharray="10 7" strokeDashoffset="8" />
+              <text x="72" y="672" fill="#172D46" fontFamily="Instrument Sans, sans-serif" fontSize="12" fontWeight="700" letterSpacing="1.5">DATE / YEAR</text>
+            </g>}
+          </g>}
         </svg>
       </div>
     </div>
   );
 }
-

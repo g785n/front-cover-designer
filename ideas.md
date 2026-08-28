@@ -88,3 +88,11 @@ The header lockup reads **Cover Studio** with **by** followed by the Boardforms 
 ### Boardforms Production-Desk Amendments
 
 Utility panels use editorial rules, measured labels, sharper grouping, and restrained corners; softly rounded containers are reserved for primary actions, connection status, and meaningful previews. Starter compositions prioritize abstract, palette-aware Boardforms report backgrounds before editorial image options. The Cover Studio name carries a small green crop-frame motif as its ownable product signature, while the official Boardforms wordmark remains unmodified.
+
+## Report Overlay Placement Model
+
+The supplied report-cover examples resolve into a predictable **3 × 3 title-placement system**: top-left, top-centre, top-right, middle-left, middle-centre, middle-right, bottom-left, bottom-centre, and bottom-right. The safe rectangle changes position and alignment but remains a guide only. The established default is middle-left, approximately `x 5% / y 40% / width 40% / height 20%`.
+
+Date handling is a separate setting with three modes: **within title**, **bottom-left**, and **hidden**. When within title, the main guide reads “TITLE + DATE.” When bottom-left, the main title guide excludes the date and a compact date-safe marker appears at approximately `x 5% / y 89%`. This mirrors the supplied separated-date example and prevents the date from becoming coupled to title alignment.
+
+The URL contract uses `titlePosition` with one of the nine named values and `datePosition=title|bottom-left|hidden`. Invalid values safely fall back to `middle-left` and `title`. If either valid overlay parameter is present, the title-safe preview opens automatically; all overlay guides remain editor-only and are stripped from PNG export.

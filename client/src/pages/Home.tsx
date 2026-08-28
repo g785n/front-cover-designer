@@ -13,9 +13,11 @@ import {
   createTemplates,
   makeId,
   readReportPaletteFromUrl,
+  readReportOverlayFromUrl,
   type CoverBackground,
   type CoverElement,
   type CoverTemplate,
+  type ReportOverlaySettings,
   type ShapeKind,
 } from "@/lib/cover-editor";
 
@@ -85,6 +87,7 @@ export default function Home() {
   const templates = useMemo(() => createTemplates(), []);
   const blankTemplate = templates[0];
   const reportPaletteResult = useMemo(() => readReportPaletteFromUrl(window.location.search), []);
+  const reportOverlayResult = useMemo(() => readReportOverlayFromUrl(window.location.search), []);
   const hasReportPalette = reportPaletteResult.inheritedCount > 0;
   const initialBackground = useMemo<CoverBackground>(() => hasReportPalette
     ? { mode: "linear", color1: reportPaletteResult.palette.primary, color2: reportPaletteResult.palette.accent1, angle: 135 }
@@ -95,7 +98,8 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(78);
   const [showGrid, setShowGrid] = useState(false);
-  const [showSafeZone, setShowSafeZone] = useState(false);
+  const [showSafeZone, setShowSafeZone] = useState(reportOverlayResult.hasValidParams);
+  const [overlaySettings, setOverlaySettings] = useState<ReportOverlaySettings>(reportOverlayResult.settings);
   const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : blankTemplate.name);
   const [isExporting, setIsExporting] = useState(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -133,6 +137,15 @@ export default function Home() {
     }
     changeBackground({ ...background, color1: color, ...(background.mode === "solid" ? { color2: color } : {}) });
     toast.success("Report colour applied to the background.");
+  };
+
+  const changeOverlaySettings = (next: ReportOverlaySettings) => {
+    setOverlaySettings(next);
+    setShowSafeZone(true);
+    const url = new URL(window.location.href);
+    url.searchParams.set("titlePosition", next.titlePosition);
+    url.searchParams.set("datePosition", next.datePosition);
+    window.history.replaceState({}, "", url);
   };
 
   const addShape = (shape: ShapeKind) => {
@@ -321,6 +334,7 @@ export default function Home() {
           background={background}
           reportPalette={reportPaletteResult.palette}
           inheritedColourCount={reportPaletteResult.inheritedCount}
+          overlaySettings={overlaySettings}
           selectedElement={selectedElement}
           onPanelChange={setPanel}
           onTemplate={applyTemplate}
@@ -343,6 +357,7 @@ export default function Home() {
               zoom={zoom}
               showGrid={showGrid}
               showSafeZone={showSafeZone}
+              overlaySettings={overlaySettings}
               svgRef={svgRef}
               onSelect={setSelectedId}
               onChange={setElements}
@@ -364,8 +379,12 @@ export default function Home() {
           elements={elements}
           background={background}
           reportPalette={reportPaletteResult.palette}
+          overlaySettings={overlaySettings}
+          showSafeZone={showSafeZone}
           onUpdate={updateSelected}
           onApplyReportColour={applyReportColour}
+          onOverlayChange={changeOverlaySettings}
+          onShowSafeZoneChange={setShowSafeZone}
           onSelect={setSelectedId}
           onDuplicate={duplicateSelected}
           onDelete={deleteSelected}

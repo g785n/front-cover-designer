@@ -40,3 +40,14 @@
 - [x] Preserve automatic primary-to-accent gradient initialization when valid URL colours are supplied.
 - [x] Verify plain and parameterised URLs, compact layout, panel scrolling, and exact-size PNG export.
 - [x] Run the production build and save a new checkpoint.
+
+# Report Overlay Placement Guides
+
+- [x] Inspect all supplied report-cover screenshots and identify the supported title alignments, title-zone geometry, and date treatments.
+- [x] Define concise URL parameters for title position and date placement with safe validated fallbacks.
+- [x] Make the title-safe guide follow the URL-selected title position and expose the current placement in the editor.
+- [x] Add an optional bottom-left date-safe marker for reports where the date is separated from the title.
+- [x] Add placement controls that update the URL-compatible preview state without adding text to exported artwork.
+- [x] Ensure all overlay previews and guides are excluded from exported PNGs.
+- [x] Verify representative title/date combinations, compact rendering, exact-size export, and production build.
+- [x] Save a new project checkpoint.

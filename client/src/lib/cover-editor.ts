@@ -36,6 +36,57 @@ export type ReportPaletteResult = {
   inheritedCount: number;
 };
 
+export type TitlePosition = "top-left" | "top-centre" | "top-right" | "middle-left" | "middle-centre" | "middle-right" | "bottom-left" | "bottom-centre" | "bottom-right";
+export type DatePosition = "title" | "bottom-left" | "hidden";
+export type ReportOverlaySettings = {
+  titlePosition: TitlePosition;
+  datePosition: DatePosition;
+};
+
+export type TitlePlacement = {
+  value: TitlePosition;
+  label: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  align: "left" | "centre" | "right";
+};
+
+export const DEFAULT_REPORT_OVERLAY: ReportOverlaySettings = {
+  titlePosition: "middle-left",
+  datePosition: "title",
+};
+
+export const TITLE_PLACEMENTS: TitlePlacement[] = [
+  { value: "top-left", label: "Top left", x: 55, y: 55, width: 430, height: 160, align: "left" },
+  { value: "top-centre", label: "Top centre", x: 258, y: 55, width: 550, height: 160, align: "centre" },
+  { value: "top-right", label: "Top right", x: 581, y: 55, width: 430, height: 160, align: "right" },
+  { value: "middle-left", label: "Middle left", x: 55, y: 280, width: 430, height: 150, align: "left" },
+  { value: "middle-centre", label: "Middle centre", x: 258, y: 280, width: 550, height: 150, align: "centre" },
+  { value: "middle-right", label: "Middle right", x: 581, y: 280, width: 430, height: 150, align: "right" },
+  { value: "bottom-left", label: "Bottom left", x: 55, y: 530, width: 430, height: 145, align: "left" },
+  { value: "bottom-centre", label: "Bottom centre", x: 258, y: 530, width: 550, height: 145, align: "centre" },
+  { value: "bottom-right", label: "Bottom right", x: 581, y: 530, width: 430, height: 145, align: "right" },
+];
+
+const titlePositionValues = new Set<TitlePosition>(TITLE_PLACEMENTS.map(({ value }) => value));
+const datePositionValues = new Set<DatePosition>(["title", "bottom-left", "hidden"]);
+
+export const readReportOverlayFromUrl = (search: string) => {
+  const params = new URLSearchParams(search);
+  const rawTitle = params.get("titlePosition");
+  const rawDate = params.get("datePosition");
+  const titlePosition = rawTitle && titlePositionValues.has(rawTitle as TitlePosition) ? rawTitle as TitlePosition : DEFAULT_REPORT_OVERLAY.titlePosition;
+  const datePosition = rawDate && datePositionValues.has(rawDate as DatePosition) ? rawDate as DatePosition : DEFAULT_REPORT_OVERLAY.datePosition;
+  return {
+    settings: { titlePosition, datePosition } satisfies ReportOverlaySettings,
+    hasValidParams: Boolean((rawTitle && titlePositionValues.has(rawTitle as TitlePosition)) || (rawDate && datePositionValues.has(rawDate as DatePosition))),
+  };
+};
+
+export const getTitlePlacement = (position: TitlePosition) => TITLE_PLACEMENTS.find(({ value }) => value === position) ?? TITLE_PLACEMENTS[3];
+
 export const DEFAULT_REPORT_PALETTE: ReportPalette = {
   primary: "#173B72",
   contrast: "#FFFFFF",
@@ -86,9 +137,11 @@ export const readReportPaletteFromUrl = (search: string): ReportPaletteResult =>
   return { palette, inheritedCount };
 };
 
-export const reportPaletteQuery = (palette: ReportPalette) => {
+export const reportConfigurationQuery = (palette: ReportPalette, overlay: ReportOverlaySettings) => {
   const params = new URLSearchParams();
   REPORT_PALETTE_LABELS.forEach(({ key }) => params.set(key, palette[key].slice(1)));
+  params.set("titlePosition", overlay.titlePosition);
+  params.set("datePosition", overlay.datePosition);
   return params.toString();
 };
 
