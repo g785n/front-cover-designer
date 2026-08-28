@@ -35,3 +35,7 @@ The independent visual review found the Editorial Workshop direction clear, craf
 ## Final Build and Compact Layout
 
 The refined application also renders coherently at **1,024 × 768**, retaining the tool rail, layout drawer, ruler-framed cover, inspector, layer list, and prominent export action. The final production build completed successfully after transforming 1,626 modules. No current browser-console errors were found; the only build note is the template’s non-blocking bundle-size advisory.
+
+## Scrolling Correction
+
+The layouts drawer and properties inspector now receive explicit viewport-constrained heights, zero minimum heights within the parent grid, independent vertical overflow, contained overscroll, and visible thin scrollbars. At the compact verification viewport, scrolling the left drawer to its end keeps the artboard and right inspector fixed while making the complete **Bold Signal** layout card reachable.
