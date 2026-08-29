@@ -12,6 +12,7 @@ type StudioSidebarProps = {
   reportPalette: ReportPalette;
   inheritedColourCount: number;
   overlaySettings: ReportOverlaySettings;
+  companyId: string | null;
   selectedElement?: CoverElement;
   onPanelChange: (panel: StudioPanel) => void;
   onTemplate: (template: CoverTemplate) => void;
@@ -43,7 +44,7 @@ const elementChoices: Array<{ kind: ShapeKind; name: string }> = [
   { kind: "bubbles", name: "Bubbles" }, { kind: "dots", name: "Dot field" },
 ];
 
-export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, overlaySettings, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
+export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, overlaySettings, companyId, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
   const [copied, setCopied] = useState(false);
   const chooseFile = (kind: "photo" | "logo") => {
     const input = document.createElement("input");
@@ -62,7 +63,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
   ];
 
   const copyPaletteUrl = async () => {
-    const url = `${window.location.origin}${window.location.pathname}?${reportConfigurationQuery(reportPalette, overlaySettings)}`;
+    const url = `${window.location.origin}${window.location.pathname}?${reportConfigurationQuery(reportPalette, overlaySettings, companyId)}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);

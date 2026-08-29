@@ -96,3 +96,11 @@ The supplied report-cover examples resolve into a predictable **3 × 3 title-pla
 Date handling is a separate setting with three modes: **within title**, **bottom-left**, and **hidden**. When within title, the main guide reads “TITLE + DATE.” When bottom-left, the main title guide excludes the date and a compact date-safe marker appears at approximately `x 5% / y 89%`. This mirrors the supplied separated-date example and prevents the date from becoming coupled to title alignment.
 
 The URL contract uses `titlePosition` with one of the nine named values and `datePosition=title|bottom-left|hidden`. Invalid values safely fall back to `middle-left` and `title`. If either valid overlay parameter is present, the title-safe preview opens automatically; all overlay guides remain editor-only and are stripped from PNG export.
+
+## Boardforms Save Workflow
+
+When the launch URL contains a valid Bubble UID in `company`, Cover Studio becomes a connected report workflow rather than a standalone exporter. The header shows a discreet connected-company status and a navy **Save to Boardforms** action beside the green local export action. Both actions render through the same clean, exact-size PNG pipeline, ensuring title guides, selection handles, rulers, and grid overlays are excluded. The first integration targets the verified Bubble development workflow; live routing remains a deliberate later activation step.
+
+### Connected-Workflow Style Decisions
+
+Boardforms green remains concentrated in the connected-company indicator, the selected placement marker, crop-frame signature, and primary export action. Structural labels and panel rules use governance navy. Palette and recipe choices share continuous editorial rules rather than reading as collections of floating SaaS cards, while the canvas remains the strongest object on screen. The background summary and workspace label repeat restrained crop-corner cues so the production-desk identity extends beyond the artboard without becoming decorative noise.

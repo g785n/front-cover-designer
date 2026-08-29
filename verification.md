@@ -89,3 +89,13 @@ Exporting while the top-centre **TITLE + DATE AREA** guide was visible produced 
 The potentially conflicting `titlePosition=bottom-left&datePosition=bottom-left` combination automatically lifts the title-safe rectangle above the dedicated date/year marker, preserving both zones without overlap. Unsupported values such as `titlePosition=unsupported&datePosition=side` are ignored: the editor falls back to **Middle left** and **In title**, keeps the preview hidden, and starts on the normal blank canvas without errors.
 
 The final production build completes successfully, and no browser errors were recorded during any completed overlay interaction after the full implementation loaded. Desktop and compact screenshots preserve the Colours-first workflow, Boardforms branding, movable guide, date marker, and independently scrollable panels.
+
+## Save to Boardforms
+
+Cover Studio now validates `company` as a Bubble UID in the launch URL. With `company=1689248118661x735818826526228500`, the header displayed **Company 228500 connected** and exposed a separate **Save to Boardforms** action. No save action appears without a valid UID.
+
+The confirmed browser save rendered the current cover through the clean 1,066 × 735 PNG pipeline, sent it as a private Bubble image payload with the Company UID as `attach_to`, and received a successful response from the development workflow. The interface progressed through **Saving to Boardforms…** to **Saved to Boardforms**, and displayed the success message **Cover saved to the Boardforms company.**
+
+The shared renderer was regression-tested through local export after the Bubble save. `report-palette-background (3).png` is an 8-bit RGBA PNG measuring exactly **1,066 × 735 pixels** and contains no title/date guides or editor controls. The connected workflow remains usable at 1,024 × 768 with both header actions visible.
+
+An independent visual review confirmed the connected Boardforms workflow, canvas-first layout, measurement system, and action hierarchy. Its accepted refinements calm the support panels, reserve Boardforms green for connected/action/selection states, replace floating palette cards with continuous editorial rules, and repeat restrained crop-frame cues in the workspace and background summary. The final production build succeeds with no fresh browser errors.

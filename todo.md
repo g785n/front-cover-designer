@@ -51,3 +51,14 @@
 - [x] Ensure all overlay previews and guides are excluded from exported PNGs.
 - [x] Verify representative title/date combinations, compact rendering, exact-size export, and production build.
 - [x] Save a new project checkpoint.
+
+# Save to Boardforms
+
+- [x] Read and validate the Bubble Company UID from a `company` URL parameter.
+- [x] Reuse the exact-size clean PNG renderer for both local export and Bubble saving.
+- [x] Add a Save to Boardforms action only when a valid Company UID is available.
+- [x] Send the PNG as a Bubble image payload to the verified development workflow.
+- [x] Provide saving, success, missing-ID, and workflow-error states without affecting local PNG export.
+- [x] Verify the browser request updates the intended Bubble development Company.
+- [x] Recheck title/date guides are excluded, local export remains 1,066 × 735 px, and the production build passes.
+- [x] Save a new project checkpoint.
