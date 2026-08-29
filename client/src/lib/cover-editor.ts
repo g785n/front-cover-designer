@@ -1,7 +1,11 @@
 /** Editorial Workshop: background-only compositions combine print-led colour fields, imagery, and restrained geometry. */
 export const COVER_WIDTH = 1066;
 export const COVER_HEIGHT = 735;
-export const BUBBLE_COVER_TEST_WORKFLOW = "https://boevaluate.bubbleapps.io/version-test/api/1.1/wf/coverstudio";
+export type BubbleEnvironment = "test" | "live";
+export const BUBBLE_COVER_WORKFLOWS: Record<BubbleEnvironment, string> = {
+  test: "https://boevaluate.bubbleapps.io/version-test/api/1.1/wf/coverstudio",
+  live: "https://boevaluate.bubbleapps.io/api/1.1/wf/coverstudio",
+};
 
 export const STUDIO_ASSETS = {
   boardformsBlack: "/manus-storage/boardforms-wordmark-black_31eeb753.svg",
@@ -93,6 +97,11 @@ export const readCompanyIdFromUrl = (search: string) => {
   return /^\d+x\d+$/.test(company) ? company : null;
 };
 
+export const readBubbleEnvironmentFromUrl = (search: string): BubbleEnvironment => {
+  const environment = new URLSearchParams(search).get("bubbleEnv")?.trim().toLowerCase();
+  return environment === "live" ? "live" : "test";
+};
+
 export const DEFAULT_REPORT_PALETTE: ReportPalette = {
   primary: "#173B72",
   contrast: "#FFFFFF",
@@ -143,12 +152,13 @@ export const readReportPaletteFromUrl = (search: string): ReportPaletteResult =>
   return { palette, inheritedCount };
 };
 
-export const reportConfigurationQuery = (palette: ReportPalette, overlay: ReportOverlaySettings, companyId?: string | null) => {
+export const reportConfigurationQuery = (palette: ReportPalette, overlay: ReportOverlaySettings, companyId?: string | null, bubbleEnvironment: BubbleEnvironment = "test") => {
   const params = new URLSearchParams();
   REPORT_PALETTE_LABELS.forEach(({ key }) => params.set(key, palette[key].slice(1)));
   params.set("titlePosition", overlay.titlePosition);
   params.set("datePosition", overlay.datePosition);
   if (companyId) params.set("company", companyId);
+  params.set("bubbleEnv", bubbleEnvironment);
   return params.toString();
 };
 

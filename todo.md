@@ -62,3 +62,12 @@
 - [x] Verify the browser request updates the intended Bubble development Company.
 - [x] Recheck title/date guides are excluded, local export remains 1,066 × 735 px, and the production build passes.
 - [x] Save a new project checkpoint.
+
+# Bubble Environment Routing
+
+- [x] Parse `bubbleEnv=test|live` with `test` as the safe fallback.
+- [x] Route Boardforms saves to the `version-test` workflow for test and the production workflow for live.
+- [x] Preserve the selected environment in copied integration URLs.
+- [x] Display the active Bubble environment next to the connected Company state and on the save action.
+- [x] Verify a real test save, validate live routing without performing an unconfirmed live database write, and recheck exact-size local export.
+- [x] Run the production build and save a new checkpoint.

@@ -8,12 +8,13 @@ import StudioSidebar, { type StudioPanel } from "@/components/editor/StudioSideb
 import {
   COVER_HEIGHT,
   COVER_WIDTH,
-  BUBBLE_COVER_TEST_WORKFLOW,
+  BUBBLE_COVER_WORKFLOWS,
   STUDIO_ASSETS,
   cloneElements,
   createTemplates,
   makeId,
   readCompanyIdFromUrl,
+  readBubbleEnvironmentFromUrl,
   readReportPaletteFromUrl,
   readReportOverlayFromUrl,
   type CoverBackground,
@@ -97,6 +98,7 @@ export default function Home() {
   const reportPaletteResult = useMemo(() => readReportPaletteFromUrl(window.location.search), []);
   const reportOverlayResult = useMemo(() => readReportOverlayFromUrl(window.location.search), []);
   const companyId = useMemo(() => readCompanyIdFromUrl(window.location.search), []);
+  const bubbleEnvironment = useMemo(() => readBubbleEnvironmentFromUrl(window.location.search), []);
   const hasReportPalette = reportPaletteResult.inheritedCount > 0;
   const initialBackground = useMemo<CoverBackground>(() => hasReportPalette
     ? { mode: "linear", color1: reportPaletteResult.palette.primary, color2: reportPaletteResult.palette.accent1, angle: 135 }
@@ -293,7 +295,7 @@ export default function Home() {
       const dataUrl = await fileToDataUrl(png);
       const contents = dataUrl.split(",")[1];
       if (!contents) throw new Error("The PNG could not be prepared for Boardforms.");
-      const response = await fetch(BUBBLE_COVER_TEST_WORKFLOW, {
+      const response = await fetch(BUBBLE_COVER_WORKFLOWS[bubbleEnvironment], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -310,7 +312,7 @@ export default function Home() {
       const result = await response.json().catch(() => ({}));
       if (result?.status && result.status !== "success") throw new Error(result?.message || "Boardforms did not accept the cover.");
       setSaveState("saved");
-      toast.success("Cover saved to the Boardforms company.");
+      toast.success(`Cover saved to the Boardforms ${bubbleEnvironment} company.`);
       window.setTimeout(() => setSaveState("idle"), 3000);
     } catch (error) {
       setSaveState("idle");
@@ -362,13 +364,13 @@ export default function Home() {
             <span className="sr-only">Cover name</span>
             <input value={documentName} onChange={(event) => setDocumentName(event.target.value)} />
           </label>
-          <span className={`saved-state ${companyId ? "company-connected" : ""}`}><i /> {companyId ? `Company ${companyId.slice(-6)} connected` : "Boardforms report-ready"}</span>
+          <span className={`saved-state ${companyId ? "company-connected" : ""}`}><i /> {companyId ? <>Company {companyId.slice(-6)} <b>{bubbleEnvironment}</b></> : "Boardforms report-ready"}</span>
         </div>
         <div className="topbar-actions">
           <span className="size-pill"><Maximize size={15} /> 1,066 × 735 px</span>
           {companyId && <button className={`boardforms-save-button ${saveState}`} onClick={saveToBoardforms} disabled={saveState === "saving" || isExporting}>
             {saveState === "saved" ? <Check size={18} /> : saveState === "saving" ? <Sparkles size={18} className="spin-soft" /> : <CloudUpload size={18} />}
-            {saveState === "saved" ? "Saved to Boardforms" : saveState === "saving" ? "Saving to Boardforms…" : "Save to Boardforms"}
+            <span>{saveState === "saved" ? "Saved to Boardforms" : saveState === "saving" ? "Saving to Boardforms…" : "Save to Boardforms"}</span><small>{bubbleEnvironment}</small>
           </button>}
           <button className="export-button" onClick={exportCover} disabled={isExporting}>
             {isExporting ? <Sparkles size={18} className="spin-soft" /> : <Download size={18} />}
@@ -386,6 +388,7 @@ export default function Home() {
           inheritedColourCount={reportPaletteResult.inheritedCount}
           overlaySettings={overlaySettings}
           companyId={companyId}
+          bubbleEnvironment={bubbleEnvironment}
           selectedElement={selectedElement}
           onPanelChange={setPanel}
           onTemplate={applyTemplate}

@@ -142,6 +142,7 @@
   .saved-state i { width: 6px; height: 6px; background: var(--vermilion); border-radius: 50%; }
   .saved-state.company-connected { color: oklch(0.42 0.12 161); }
   .saved-state.company-connected i { box-shadow: 0 0 0 4px oklch(0.52 0.14 161 / .12); }
+  .saved-state b { margin-left: 3px; padding: 2px 5px; border: 1px solid currentColor; font-size: 7px; letter-spacing: .12em; text-transform: uppercase; }
 
   .topbar-actions { display: flex; align-items: center; gap: 12px; padding-right: 16px; }
   .size-pill { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 13px; border: 1px solid var(--hairline); border-radius: 8px; color: oklch(0.48 0.035 250); font-size: 12px; font-weight: 600; position: relative; background-image: repeating-linear-gradient(90deg, transparent 0 8px, oklch(0.24 0.045 250 / .2) 8px 9px); background-repeat: repeat-x; background-size: auto 4px; background-position: left bottom; }
@@ -154,6 +155,7 @@
   .boardforms-save-button:active { transform: scale(.97); }
   .boardforms-save-button:disabled { opacity: .72; }
   .boardforms-save-button.saved { background: var(--vermilion); border-color: var(--vermilion); }
+  .boardforms-save-button small { padding-left: 7px; border-left: 1px solid rgba(255,255,255,.34); color: rgba(255,255,255,.72); font-size: 7px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 
   .studio-main { height: calc(100vh - 72px); min-height: 0; display: grid; grid-template-columns: 336px minmax(460px, 1fr) 286px; overflow: hidden; }
   .studio-main > * { min-height: 0; }
@@ -404,6 +406,7 @@
     .export-button { padding: 0 12px; }
     .boardforms-save-button { font-size: 0; padding: 0 11px; }
     .boardforms-save-button svg { width: 18px; height: 18px; }
+    .boardforms-save-button small, .boardforms-save-button span { display: none; }
     .studio-main { height: auto; min-height: calc(100vh - 72px); grid-template-columns: 76px minmax(0, 1fr); grid-template-rows: minmax(620px, calc(100vh - 72px)) auto; }
     .studio-sidebar { grid-column: 1; grid-row: 1; display: block; border-right: 0; }
     .tool-rail { height: 100%; }

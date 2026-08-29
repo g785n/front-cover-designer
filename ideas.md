@@ -104,3 +104,7 @@ When the launch URL contains a valid Bubble UID in `company`, Cover Studio becom
 ### Connected-Workflow Style Decisions
 
 Boardforms green remains concentrated in the connected-company indicator, the selected placement marker, crop-frame signature, and primary export action. Structural labels and panel rules use governance navy. Palette and recipe choices share continuous editorial rules rather than reading as collections of floating SaaS cards, while the canvas remains the strongest object on screen. The background summary and workspace label repeat restrained crop-corner cues so the production-desk identity extends beyond the artboard without becoming decorative noise.
+
+### Bubble Environment Contract
+
+The integration URL uses `bubbleEnv=test|live`, with **test** as the safe fallback for missing, invalid, or `dev` values. Test routes to Bubble’s `version-test` workflow; live routes to the deployed workflow. Both the connected-company status and save button show the active environment, and copied integration URLs preserve it. Live writes are never exercised during automated verification without separate user confirmation.

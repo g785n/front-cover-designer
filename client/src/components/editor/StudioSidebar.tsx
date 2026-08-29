@@ -1,7 +1,7 @@
 /** Editorial Workshop: creation tools now focus on background imagery, report-driven colour, gradients, and quiet geometric accents. */
 import { useState } from "react";
 import { Check, Circle, Copy, ImagePlus, LayoutTemplate, Minus, Palette, RectangleHorizontal, Shapes, Upload } from "lucide-react";
-import { REPORT_PALETTE_LABELS, STUDIO_ASSETS, backgroundToCss, reportConfigurationQuery, type CoverBackground, type CoverElement, type CoverTemplate, type ReportOverlaySettings, type ReportPalette, type ShapeKind } from "@/lib/cover-editor";
+import { REPORT_PALETTE_LABELS, STUDIO_ASSETS, backgroundToCss, reportConfigurationQuery, type BubbleEnvironment, type CoverBackground, type CoverElement, type CoverTemplate, type ReportOverlaySettings, type ReportPalette, type ShapeKind } from "@/lib/cover-editor";
 
 export type StudioPanel = "templates" | "images" | "shapes" | "brand";
 
@@ -13,6 +13,7 @@ type StudioSidebarProps = {
   inheritedColourCount: number;
   overlaySettings: ReportOverlaySettings;
   companyId: string | null;
+  bubbleEnvironment: BubbleEnvironment;
   selectedElement?: CoverElement;
   onPanelChange: (panel: StudioPanel) => void;
   onTemplate: (template: CoverTemplate) => void;
@@ -44,7 +45,7 @@ const elementChoices: Array<{ kind: ShapeKind; name: string }> = [
   { kind: "bubbles", name: "Bubbles" }, { kind: "dots", name: "Dot field" },
 ];
 
-export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, overlaySettings, companyId, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
+export default function StudioSidebar({ panel, templates, background, reportPalette, inheritedColourCount, overlaySettings, companyId, bubbleEnvironment, selectedElement, onPanelChange, onTemplate, onAddShape, onUpload, onBackground, onApplyReportColour }: StudioSidebarProps) {
   const [copied, setCopied] = useState(false);
   const chooseFile = (kind: "photo" | "logo") => {
     const input = document.createElement("input");
@@ -63,7 +64,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
   ];
 
   const copyPaletteUrl = async () => {
-    const url = `${window.location.origin}${window.location.pathname}?${reportConfigurationQuery(reportPalette, overlaySettings, companyId)}`;
+    const url = `${window.location.origin}${window.location.pathname}?${reportConfigurationQuery(reportPalette, overlaySettings, companyId, bubbleEnvironment)}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);

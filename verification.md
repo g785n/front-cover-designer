@@ -99,3 +99,11 @@ The confirmed browser save rendered the current cover through the clean 1,066 ×
 The shared renderer was regression-tested through local export after the Bubble save. `report-palette-background (3).png` is an 8-bit RGBA PNG measuring exactly **1,066 × 735 pixels** and contains no title/date guides or editor controls. The connected workflow remains usable at 1,024 × 768 with both header actions visible.
 
 An independent visual review confirmed the connected Boardforms workflow, canvas-first layout, measurement system, and action hierarchy. Its accepted refinements calm the support panels, reserve Boardforms green for connected/action/selection states, replace floating palette cards with continuous editorial rules, and repeat restrained crop-frame cues in the workspace and background summary. The final production build succeeds with no fresh browser errors.
+
+## Bubble Environment Routing
+
+The same parameterised Company URL was loaded with `bubbleEnv=test` and `bubbleEnv=live`. Test visibly rendered **Company 228500 TEST** and **Save to Boardforms TEST** while resolving to the previously verified `version-test` workflow. Live visibly rendered **Company 228500 LIVE** and **Save to Boardforms LIVE** while resolving to the production workflow. No live save was clicked, avoiding an unconfirmed production database write. Copied integration links now preserve the selected environment.
+
+An unsupported value, `bubbleEnv=dev`, safely fell back to **TEST** in both the connected-company indicator and save button. Missing environment values use the same safe test fallback.
+
+The final production build succeeds with no fresh browser errors. A trusted desktop review confirmed the explicit TEST label remains integrated with the Boardforms lockup, restrained action hierarchy, dominant artboard, and production-desk design, and recommended shipping the current visual treatment without further changes.
