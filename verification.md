@@ -107,3 +107,13 @@ The same parameterised Company URL was loaded with `bubbleEnv=test` and `bubbleE
 An unsupported value, `bubbleEnv=dev`, safely fell back to **TEST** in both the connected-company indicator and save button. Missing environment values use the same safe test fallback.
 
 The final production build succeeds with no fresh browser errors. A trusted desktop review confirmed the explicit TEST label remains integrated with the Boardforms lockup, restrained action hierarchy, dominant artboard, and production-desk design, and recommended shipping the current visual treatment without further changes.
+
+## Bubble URL-First Persistence Fix
+
+The original raw image object reached Bubble as `[object Object]`, leaving `ImagefontCover` broken despite an HTTP 200 workflow response. Cover Studio was upgraded with server-side storage and now validates the rendered PNG, uploads it first, resolves a stable HTTPS `/manus-storage/cover-studio/...png` URL, and sends Bubble the flat payload `{ company, cover: imageUrl }`.
+
+The corrected browser save returned a stable 1,066 × 735 PNG URL and Bubble reported success. The user then confirmed that development Company `1689248118661x735818826526228500` displayed the actual blue gradient image in `ImagefontCover`. Five automated tests pass, covering endpoint routing, PNG validation, safe filenames, and public origin construction; the full production build also succeeds.
+
+After Bubble changed the expression to `Request Data's cover:saved to Bubble Storage`, an authorised test save completed successfully. Cover Studio uploaded a fresh PNG to `.../manus-storage/cover-studio/1689248118661x735818826526228500/1788000624468-report-palette-background_506d5631.png`, sent that normal HTTPS URL to the Bubble test workflow, and received HTTP 200 with `{ success: true }`. Final confirmation of Bubble’s copied file URL remains an external database check.
+
+The user confirmed the end-to-end storage-copy flow is now working. Bubble receives the stable Cover Studio handoff URL, copies the PNG into Bubble storage through `Request Data's cover:saved to Bubble Storage`, and serves the final image from the Company’s `ImagefontCover` field. This resolves the previous `[object Object]` image failure.

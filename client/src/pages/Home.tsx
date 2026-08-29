@@ -2,13 +2,13 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Check, CloudUpload, Download, Grid3X3, Maximize, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 import CoverCanvas from "@/components/editor/CoverCanvas";
 import PropertiesPanel from "@/components/editor/PropertiesPanel";
 import StudioSidebar, { type StudioPanel } from "@/components/editor/StudioSidebar";
 import {
   COVER_HEIGHT,
   COVER_WIDTH,
-  BUBBLE_COVER_WORKFLOWS,
   STUDIO_ASSETS,
   cloneElements,
   createTemplates,
@@ -114,6 +114,7 @@ export default function Home() {
   const [documentName, setDocumentName] = useState(hasReportPalette ? "Report palette background" : blankTemplate.name);
   const [isExporting, setIsExporting] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
+  const saveCoverMutation = trpc.cover.saveToBoardforms.useMutation();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const selectedElement = elements.find((element) => element.id === selectedId);
 
@@ -295,22 +296,12 @@ export default function Home() {
       const dataUrl = await fileToDataUrl(png);
       const contents = dataUrl.split(",")[1];
       if (!contents) throw new Error("The PNG could not be prepared for Boardforms.");
-      const response = await fetch(BUBBLE_COVER_WORKFLOWS[bubbleEnvironment], {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          company: companyId,
-          cover: {
-            filename: cleanFilename(documentName),
-            contents,
-            private: true,
-            attach_to: companyId,
-          },
-        }),
+      await saveCoverMutation.mutateAsync({
+        company: companyId,
+        filename: cleanFilename(documentName),
+        contents,
+        bubbleEnvironment,
       });
-      if (!response.ok) throw new Error(`Boardforms returned ${response.status}.`);
-      const result = await response.json().catch(() => ({}));
-      if (result?.status && result.status !== "success") throw new Error(result?.message || "Boardforms did not accept the cover.");
       setSaveState("saved");
       toast.success(`Cover saved to the Boardforms ${bubbleEnvironment} company.`);
       window.setTimeout(() => setSaveState("idle"), 3000);

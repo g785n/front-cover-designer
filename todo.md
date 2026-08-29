@@ -71,3 +71,30 @@
 - [x] Display the active Bubble environment next to the connected Company state and on the save action.
 - [x] Verify a real test save, validate live routing without performing an unconfirmed live database write, and recheck exact-size local export.
 - [x] Run the production build and save a new checkpoint.
+
+# Bubble Image Persistence Fix
+
+- [x] Compare the working image-URL request with Cover Studio’s raw image payload and the current Bubble expression.
+- [x] Confirm whether `:saved to Bubble Storage` is incorrectly reprocessing an image already uploaded by the Workflow API.
+- [x] Retest with `ImagefontCover = Request Data's cover` directly before changing the browser payload architecture.
+- [x] Confirm Bubble stores the raw nested payload as `[object Object]` rather than a valid image.
+- [x] Upgrade Cover Studio with server-side file storage for generated cover PNGs.
+- [x] Upload the clean PNG first and receive a stable HTTPS image URL.
+- [x] Send Bubble a flat `{ company, cover: imageUrl }` payload matching the successful original test.
+- [x] Keep `ImagefontCover = Request Data's cover` without `:saved to Bubble Storage`.
+- [x] Verify the actual Company image field contains the new cover, not merely that the workflow returns HTTP 200.
+- [x] Recheck test/live routing, local export, and production build before saving a checkpoint.
+
+# Bubble-Owned Cover Storage
+
+- [x] Configure Bubble to set `ImagefontCover = Request Data's cover:saved to Bubble Storage` now that `cover` is a valid HTTPS URL.
+- [x] Run an authorised test save for Company `1689248118661x735818826526228500` through the URL-first workflow.
+- [x] Confirm Bubble’s action completes with the flat image URL and invokes the Bubble storage-copy expression.
+- [x] Confirm `ImagefontCover` renders the cover and references Bubble storage rather than `[object Object]` or a broken image.
+- [x] Re-run automated tests, production build, and exact-size local export before checkpointing.
+
+# Publication Readiness
+
+- [x] Record user confirmation that Bubble successfully copies and serves the saved cover from its own storage.
+- [x] Re-run the automated test suite and production build after the final storage-copy test.
+- [x] Review the complete checklist and save a release checkpoint for user-initiated publication.
