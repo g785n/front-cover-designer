@@ -60,7 +60,7 @@ export default function StudioSidebar({ panel, templates, background, reportPale
     { name: "Brand blend", value: { mode: "linear", color1: reportPalette.primary, color2: reportPalette.accent1, angle: 135 } },
     { name: "Chart blend", value: { mode: "linear", color1: reportPalette.accent2, color2: reportPalette.accent5, angle: 120 } },
     { name: "Rating blend", value: { mode: "linear", color1: reportPalette.positive, color2: reportPalette.average, angle: 145 } },
-    { name: "Primary glow", value: { mode: "radial", color1: reportPalette.contrast, color2: reportPalette.primary, angle: 0 } },
+    { name: "Primary glow", value: { mode: "radial", color1: reportPalette.accent4, color2: reportPalette.primary, angle: 0 } },
   ];
 
   const copyPaletteUrl = async () => {

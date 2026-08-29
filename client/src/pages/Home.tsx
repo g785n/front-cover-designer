@@ -191,6 +191,7 @@ export default function Home() {
     });
   };
 
+
   const uploadImage = (file: File, kind: "photo" | "logo") => {
     if (!file.type.startsWith("image/")) {
       toast.error("Please choose an image file.");
@@ -403,6 +404,7 @@ export default function Home() {
               showGrid={showGrid}
               showSafeZone={showSafeZone}
               overlaySettings={overlaySettings}
+              reportPalette={reportPaletteResult.palette}
               svgRef={svgRef}
               onSelect={setSelectedId}
               onChange={setElements}

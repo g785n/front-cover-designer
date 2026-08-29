@@ -1,6 +1,6 @@
 /** Editorial Workshop: the fixed-ratio artboard renders export-safe gradients, geometry, and imagery with direct manipulation. */
 import { type PointerEvent, type RefObject, useRef } from "react";
-import { COVER_HEIGHT, COVER_WIDTH, getTitlePlacement, type CoverBackground, type CoverElement, type ReportOverlaySettings } from "@/lib/cover-editor";
+import { COVER_HEIGHT, COVER_WIDTH, getTitlePlacement, resolvePaletteColour, type CoverBackground, type CoverElement, type ReportOverlaySettings, type ReportPalette } from "@/lib/cover-editor";
 
 type Interaction = {
   kind: "move" | "resize" | "rotate";
@@ -19,6 +19,7 @@ type CoverCanvasProps = {
   showGrid: boolean;
   showSafeZone: boolean;
   overlaySettings: ReportOverlaySettings;
+  reportPalette: ReportPalette;
   svgRef: RefObject<SVGSVGElement | null>;
   onSelect: (id: string | null) => void;
   onChange: (elements: CoverElement[]) => void;
@@ -26,7 +27,12 @@ type CoverCanvasProps = {
 
 const HANDLE = 10;
 
-export default function CoverCanvas({ elements, background, selectedId, zoom, showGrid, showSafeZone, overlaySettings, svgRef, onSelect, onChange }: CoverCanvasProps) {
+const hexChannels = (hex: string) => {
+  const value = hex.replace("#", "");
+  return [0, 2, 4].map((index) => Number.parseInt(value.slice(index, index + 2), 16) / 255).join(" ");
+};
+
+export default function CoverCanvas({ elements, background, selectedId, zoom, showGrid, showSafeZone, overlaySettings, reportPalette, svgRef, onSelect, onChange }: CoverCanvasProps) {
   const interactionRef = useRef<Interaction | null>(null);
   const titlePlacement = getTitlePlacement(overlaySettings.titlePosition);
   const separatedDateCollision = overlaySettings.datePosition === "bottom-left" && overlaySettings.titlePosition === "bottom-left";
@@ -111,12 +117,27 @@ export default function CoverCanvas({ elements, background, selectedId, zoom, sh
 
   const renderElement = (element: CoverElement) => {
     const clipId = `clip-${element.id}`;
+    const treatment = element.imageTreatment || "original";
+    const treatmentColour1 = resolvePaletteColour(reportPalette, element.treatmentColour1);
+    const treatmentColour2 = resolvePaletteColour(reportPalette, element.treatmentColour2 || "accent1");
+    const treatmentStrength = element.treatmentStrength ?? 0.62;
+    const duotoneId = `duotone-${element.id}`;
+    const washId = `wash-${element.id}`;
     return (
       <g key={element.id} transform={`translate(${element.x} ${element.y}) rotate(${element.rotation} ${element.width / 2} ${element.height / 2})`} opacity={element.opacity} onPointerDown={(event) => beginInteraction(event, element, "move")} style={{ cursor: element.locked ? "not-allowed" : "move", touchAction: "none" }}>
         {element.type === "image" && (
           <>
-            <defs><clipPath id={clipId}><rect width={element.width} height={element.height} rx={element.radius || 0} /></clipPath></defs>
-            <image href={element.src} width={element.width} height={element.height} preserveAspectRatio={element.fit === "contain" ? "xMidYMid meet" : "xMidYMid slice"} clipPath={`url(#${clipId})`} />
+            <defs>
+              <clipPath id={clipId}><rect width={element.width} height={element.height} rx={element.radius || 0} /></clipPath>
+              <linearGradient id={washId} x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor={treatmentColour1} /><stop offset="100%" stopColor={treatmentColour2} /></linearGradient>
+              <filter id={duotoneId} colorInterpolationFilters="sRGB">
+                <feColorMatrix type="saturate" values="0" result="monochrome" />
+                <feComponentTransfer in="monochrome"><feFuncR type="table" tableValues={hexChannels(treatmentColour1).split(" ")[0] + " " + hexChannels(treatmentColour2).split(" ")[0]} /><feFuncG type="table" tableValues={hexChannels(treatmentColour1).split(" ")[1] + " " + hexChannels(treatmentColour2).split(" ")[1]} /><feFuncB type="table" tableValues={hexChannels(treatmentColour1).split(" ")[2] + " " + hexChannels(treatmentColour2).split(" ")[2]} /></feComponentTransfer>
+              </filter>
+            </defs>
+            <image href={element.src} width={element.width} height={element.height} preserveAspectRatio={element.fit === "contain" ? "xMidYMid meet" : "xMidYMid slice"} clipPath={`url(#${clipId})`} filter={treatment === "duotone" ? `url(#${duotoneId})` : undefined} />
+            {treatment === "tint" && <rect width={element.width} height={element.height} rx={element.radius || 0} clipPath={`url(#${clipId})`} fill={treatmentColour1} fillOpacity={treatmentStrength} style={{ mixBlendMode: "multiply" }} pointerEvents="none" />}
+            {treatment === "gradient-wash" && <rect width={element.width} height={element.height} rx={element.radius || 0} clipPath={`url(#${clipId})`} fill={`url(#${washId})`} fillOpacity={treatmentStrength} style={{ mixBlendMode: "multiply" }} pointerEvents="none" />}
           </>
         )}
         {element.type === "shape" && renderShape(element)}

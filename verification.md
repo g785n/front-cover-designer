@@ -117,3 +117,43 @@ The corrected browser save returned a stable 1,066 × 735 PNG URL and Bubble rep
 After Bubble changed the expression to `Request Data's cover:saved to Bubble Storage`, an authorised test save completed successfully. Cover Studio uploaded a fresh PNG to `.../manus-storage/cover-studio/1689248118661x735818826526228500/1788000624468-report-palette-background_506d5631.png`, sent that normal HTTPS URL to the Bubble test workflow, and received HTTP 200 with `{ success: true }`. Final confirmation of Bubble’s copied file URL remains an external database check.
 
 The user confirmed the end-to-end storage-copy flow is now working. Bubble receives the stable Cover Studio handoff URL, copies the PNG into Bubble storage through `Request Data's cover:saved to Bubble Storage`, and serves the final image from the Company’s `ImagefontCover` field. This resolves the previous `[object Object]` image failure.
+
+## Palette-Aware Image Treatments
+
+The image-led **New Perspective** starter was applied on a fully parameterised Boardforms report URL, and its image layer exposed four clear treatments: Original, Brand tint, Duotone, and Gradient wash. Applying **Brand tint** created a visibly primary-navy-tinted version of the architecture image while retaining the original image source, current title/date guide, and editor controls. The inspector exposes a named report-palette colour selector, strength control, and a one-click Remove action.
+
+The same selected image successfully switched to **Duotone**, visibly mapping the architecture imagery to the primary navy and chart-blue palette roles, then to **Gradient wash**, overlaying the same named palette pairing at an adjustable 62% strength. Both modes preserved the image layer, its dimensions, and its source without duplication. The treatment controls displayed the correct one- or two-colour palette selectors according to the selected treatment.
+
+## Native Palette Illustration Library
+
+The new **Illustrations** tool appears separately from Images and Elements and presents four colour-reactive SVG presets: Orbiting forms, Data ribbons, Soft clusters, and Framed geometry. Their compact library previews already use the live report palette. Adding **Data ribbons** created one full-artboard SVG layer and opened an inspector that confirms its named palette bindings and allows the user to switch among all four forms without creating a replacement raster image. The rendered composition visibly uses the inherited primary navy, chart blue, violet, and rating yellow directly as SVG fills and strokes.
+
+The selected SVG layer switched successfully from Data ribbons to Framed geometry without adding a second layer or changing its full-artboard dimensions. A local export of Framed geometry produced `report-palette-background (5).png`, an 8-bit RGBA PNG measuring exactly **1,066 × 735 pixels**. Automated verification completed successfully: five tests passed, including image-treatment and native illustration preset coverage, and the production build completed successfully.
+
+## Reference-Led Editorial SVG Scenes
+
+The Illustration library now presents **Architectural sail**, **Botanical ribbon**, **Coastal divide**, and **Quiet orbit**. On the supplied report palette, Architectural sail rendered as a native full-artboard SVG scene: a pale contrast ground, a large primary curved sail, chart-blue disc, green structural plane, and restrained accent/shadow forms. It preserved the middle-left title-safe zone without visual competition. The inspector retained a single selectable SVG layer, palette-role explanation, scene-switching controls, standard layer controls, and no raster source image.
+
+Botanical ribbon switched in place and rendered a spacious contrast ground with layered green, navy, blue, and violet foliage silhouettes, a flowing chart-blue ribbon, and fine direct-SVG stem details. Coastal divide switched in place and rendered a quiet left title field against a deep-primary coastal edge, a sharp chart-accent shoreline, and restrained line detail. Both scenes remained a single editable full-artboard SVG layer, kept the live middle-left title and bottom-left date guides unobstructed, and used the inherited palette roles directly rather than a raster filter.
+
+The same Illustration library was opened on a second fully supplied report palette (`#4B2142` primary, `#FBF6EE` contrast, and contrasting rust, teal, violet, gold, and green accents). All four library previews immediately redrew with the new palette before an illustration was added, confirming the scene library does not contain fixed visual colours.
+
+Architectural sail was then added on the second palette and redrew as a plum primary curved sail, rust chart-accent disc, forest green plane, pale paper/contrast background, and pale-gold ground plane—without changing the scene geometry. The composition preserved the same left-side title and date guide space. Its local export, `report-palette-background (6).png`, is an 8-bit RGBA PNG measuring exactly **1,066 × 735 pixels**. The automated test suite passed all five tests, and the production build completed successfully.
+
+## Illustration Library Removal
+
+The native Illustrations tool, drawer, preset model, SVG renderer, inspector controls, tests, and visual styles were removed. The browser now shows the intended tool order: **Colours, Images, Elements, Backgrounds**. The clean default canvas has zero artwork layers and no illustration entry point.
+
+The retained **New Perspective** photo background still adds and selects correctly. Its report-palette treatment panel remains available; applying **Brand tint** with the alternate supplied primary colour produced a visible non-destructive tinted treatment, exposed the named colour picker and 62% strength control, and left the original image layer editable. Title/date guides and the connected Boardforms actions also remain present.
+
+The simplified editor exported the tinted photo background at exactly **1,066 × 735 px**. All five automated tests pass and the production build succeeds. The final visual review shows the intended four-tool rail—Colours, Images, Elements, Backgrounds—alongside the preserved Boardforms workspace, blank default canvas, report palette controls, and output/title-date guidance. The historical browser-console message about a removed `ILLUSTRATION_PRESETS` export occurred during the live-reload transition; the refreshed editor, TypeScript checker, tests, and production build all succeed without active errors.
+
+An authorised post-removal save was run from the four-tool editor with a palette-configured blank canvas. The server received the exact-size PNG, uploaded it to `cover-studio/1689248118661x735818826526228500/1788027404105-report-palette-background_0a7ffdf9.png`, and returned the normal HTTPS handoff URL after a successful Bubble TEST workflow call. The client request returned HTTP 200 in 3.86 seconds with no fresh browser-console errors.
+
+## Nine-Colour Palette Contract
+
+Text contrast has been removed from the report palette model, default colours, labels, swatches, inherited-colour counter, palette-aware treatment selectors, and copied integration URL builder. The remaining contract is **primary**, **positive**, **average**, **negative**, and **accent1** through **accent5**—nine report colours in total.
+
+A legacy URL containing `contrast=FFFFFF` loaded correctly, ignored that parameter, reported **9 URL colours connected**, and displayed exactly nine named swatches with no Text contrast option. The Primary glow recipe now uses Chart 4 as its light starting colour rather than a separate contrast role. The copy-link builder outputs only the supported nine colours plus Company, Bubble environment, title position, and date position.
+
+`report-palette-background (7).png` exported from the legacy URL is an 8-bit RGBA PNG measuring exactly **1,066 × 735 pixels**. All five automated tests pass, including explicit legacy `contrast`-ignore coverage, and the final production build succeeds.

@@ -98,3 +98,61 @@
 - [x] Record user confirmation that Bubble successfully copies and serves the saved cover from its own storage.
 - [x] Re-run the automated test suite and production build after the final storage-copy test.
 - [x] Review the complete checklist and save a release checkpoint for user-initiated publication.
+
+# Palette-Aware Image Treatments
+
+- [x] Inspect the image layer data model and SVG rendering path for export-safe filter and overlay support.
+- [x] Add non-destructive brand tint, duotone, and gradient-wash treatments driven by the report palette.
+- [x] Provide understandable treatment, colour-source, and strength controls for selected image layers.
+- [x] Keep original image uploads intact and allow treatment removal in one action.
+- [x] Verify starter imagery and local exact-size PNG export preserve the treatment.
+- [ ] Verify user-uploaded imagery and Bubble saving preserve the treatment.
+- [x] Run the automated tests and production build after the initial treatment implementation.
+
+# Native Palette Illustration Library
+
+- [x] Define reusable SVG illustration presets that bind every visual region to named report palette roles.
+- [x] Add an Illustration library distinct from uploaded images and retain the existing upload treatment controls.
+- [x] Add one-click palette-aware compositions covering organic bubbles, data ribbons, framed geometry, and orbiting forms.
+- [x] Allow users to switch each illustration preset while keeping URL palette changes reactive.
+- [x] Verify palette-driven native artwork uses direct SVG fills and strokes rather than filters or raster colour manipulation.
+- [ ] Verify local 1,066 × 735 PNG export and Bubble saving preserve the reactive SVG artwork.
+- [ ] Run the automated tests and production build, then save a new checkpoint.
+
+# Palette-Reactive Architectural Scenes
+
+- [ ] Translate the supplied reference into an editorial composition system of paper planes, curved sails, discs, shadow wedges, and title-safe negative space.
+- [ ] Replace the first abstract SVG presets with four architectural scene variants built entirely from palette-bound SVG regions.
+- [ ] Map scene shadows, paper/light planes, focal discs, structural forms, and accent edges to named report palette roles.
+- [ ] Preserve the existing Illustration library, layer selection, switching controls, local export, and Bubble-save compatibility.
+- [ ] Verify a default and URL-provided palette redraw the same scene into an on-brand composition.
+- [ ] Verify local 1,066 × 735 PNG export and Bubble saving, then run tests and production build.
+- [ ] Save a new checkpoint.
+
+# Editorial Palette Scene Library
+
+- [ ] Define colour-role mappings and title-safe composition rules for an architectural sail, botanical ribbon, and coastal divide scene.
+- [ ] Replace generic illustration presets with the three reference-led SVG scene families plus a complementary abstract option.
+- [ ] Use palette roles for the paper/light plane, focal accent, structural dark, organic/coastal form, and shadow depth in every scene.
+- [ ] Preserve direct SVG rendering, selectable layers, local export, and Bubble storage-copy compatibility.
+- [ ] Verify default and supplied URL palettes redraw all scene families while protecting title-safe space.
+- [ ] Verify clean 1,066 × 735 export and a Bubble test save, then run tests and production build.
+- [ ] Save a new checkpoint.
+
+# Remove Native Illustrations
+
+- [x] Remove the Illustrations tool-rail entry, library drawer, SVG layer model, scene renderer, and inspector controls.
+- [x] Remove unused illustration tests, styling, presets, and product copy while retaining report-palette image treatments.
+- [x] Confirm the streamlined tool order is Colours, Images, Elements, and Backgrounds.
+- [x] Verify the retained photo treatment and title/date guides after the removal.
+- [x] Verify local exact-size export and the Bubble save route remain intact after illustration removal.
+- [x] Run tests and production build after removal.
+
+# Remove Text Contrast
+
+- [x] Remove text contrast from the report palette model, defaults, labels, parsers, and copied URL builder.
+- [x] Remove the text-contrast swatch and any palette treatment controls that expose it.
+- [x] Keep `contrast` backward-compatible as an ignored legacy URL parameter.
+- [x] Update palette recipes and supporting copy to use the remaining primary, rating, and chart colour roles.
+- [x] Verify URL parsing, default palette, image treatment selectors, local export, automated tests, and production build.
+- [x] Save a new checkpoint.

@@ -25,7 +25,6 @@ export type CoverBackground = {
 
 export type ReportPalette = {
   primary: string;
-  contrast: string;
   positive: string;
   average: string;
   negative: string;
@@ -35,6 +34,16 @@ export type ReportPalette = {
   accent4: string;
   accent5: string;
 };
+
+export type PaletteColourKey = keyof ReportPalette;
+export type ImageTreatment = "original" | "tint" | "duotone" | "gradient-wash";
+
+export const IMAGE_TREATMENTS: Array<{ value: ImageTreatment; label: string; description: string }> = [
+  { value: "original", label: "Original", description: "Keep the image unchanged." },
+  { value: "tint", label: "Brand tint", description: "Apply one report colour as a subtle tint." },
+  { value: "duotone", label: "Duotone", description: "Map shadows and highlights to two report colours." },
+  { value: "gradient-wash", label: "Gradient wash", description: "Layer a palette gradient over the image." },
+];
 
 export type ReportPaletteResult = {
   palette: ReportPalette;
@@ -104,7 +113,6 @@ export const readBubbleEnvironmentFromUrl = (search: string): BubbleEnvironment 
 
 export const DEFAULT_REPORT_PALETTE: ReportPalette = {
   primary: "#173B72",
-  contrast: "#FFFFFF",
   positive: "#2D8A64",
   average: "#E2A72E",
   negative: "#C74736",
@@ -117,7 +125,6 @@ export const DEFAULT_REPORT_PALETTE: ReportPalette = {
 
 export const REPORT_PALETTE_LABELS: Array<{ key: keyof ReportPalette; label: string }> = [
   { key: "primary", label: "Primary" },
-  { key: "contrast", label: "Text contrast" },
   { key: "positive", label: "Positive" },
   { key: "average", label: "Average" },
   { key: "negative", label: "Negative" },
@@ -127,6 +134,8 @@ export const REPORT_PALETTE_LABELS: Array<{ key: keyof ReportPalette; label: str
   { key: "accent4", label: "Chart 4" },
   { key: "accent5", label: "Chart 5" },
 ];
+
+export const resolvePaletteColour = (palette: ReportPalette, key?: PaletteColourKey) => palette[key || "primary"];
 
 const normaliseHex = (value: string | null) => {
   if (!value) return null;
@@ -178,6 +187,10 @@ export type CoverElement = {
   locked?: boolean;
   src?: string;
   fit?: "cover" | "contain";
+  imageTreatment?: ImageTreatment;
+  treatmentColour1?: PaletteColourKey;
+  treatmentColour2?: PaletteColourKey;
+  treatmentStrength?: number;
   shape?: ShapeKind;
   fill?: string;
   stroke?: string;

@@ -1,6 +1,6 @@
 /** Editorial Workshop: the inspector now stays focused on imagery, geometry, and background production controls. */
 import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, Lock, Trash2, Unlock } from "lucide-react";
-import { COVER_HEIGHT, COVER_WIDTH, REPORT_PALETTE_LABELS, TITLE_PLACEMENTS, backgroundToCss, type CoverBackground, type CoverElement, type ReportOverlaySettings, type ReportPalette } from "@/lib/cover-editor";
+import { COVER_HEIGHT, COVER_WIDTH, IMAGE_TREATMENTS, REPORT_PALETTE_LABELS, TITLE_PLACEMENTS, backgroundToCss, type CoverBackground, type CoverElement, type ImageTreatment, type PaletteColourKey, type ReportOverlaySettings, type ReportPalette } from "@/lib/cover-editor";
 
 type PropertiesPanelProps = {
   element?: CoverElement;
@@ -48,6 +48,20 @@ export default function PropertiesPanel({ element, elements, background, reportP
 
         {element?.type === "image" && <div className="property-stack">
           <div className="property-field"><span>Image fit</span><div className="segment-control text-segments"><button className={element.fit === "cover" ? "active" : ""} onClick={() => onUpdate({ fit: "cover" })}>Fill frame</button><button className={element.fit === "contain" ? "active" : ""} onClick={() => onUpdate({ fit: "contain" })}>Show all</button></div></div>
+          <div className="image-treatment-panel">
+            <div className="image-treatment-heading"><span><small>Report palette treatment</small><strong>Make it feel on-brand</strong></span>{element.imageTreatment && element.imageTreatment !== "original" && <button onClick={() => onUpdate({ imageTreatment: "original" })}>Remove</button>}</div>
+            <div className="treatment-options">
+              {IMAGE_TREATMENTS.map(({ value, label, description }) => <button key={value} className={(element.imageTreatment || "original") === value ? "active" : ""} title={description} onClick={() => onUpdate({ imageTreatment: value as ImageTreatment, treatmentColour1: element.treatmentColour1 || "primary", treatmentColour2: element.treatmentColour2 || "accent1", treatmentStrength: element.treatmentStrength ?? 0.62 })}>{label}</button>)}
+            </div>
+            {(element.imageTreatment || "original") !== "original" && <>
+              <div className="treatment-colour-row">
+                <label><span>{element.imageTreatment === "tint" ? "Tint colour" : "Shadow / start"}</span><select value={element.treatmentColour1 || "primary"} onChange={(event) => onUpdate({ treatmentColour1: event.target.value as PaletteColourKey })}>{REPORT_PALETTE_LABELS.map(({ key, label }) => <option key={key} value={key}>{label}</option>)}</select></label>
+                {element.imageTreatment !== "tint" && <label><span>Highlight / end</span><select value={element.treatmentColour2 || "accent1"} onChange={(event) => onUpdate({ treatmentColour2: event.target.value as PaletteColourKey })}>{REPORT_PALETTE_LABELS.map(({ key, label }) => <option key={key} value={key}>{label}</option>)}</select></label>}
+              </div>
+              {element.imageTreatment !== "duotone" && <label className="range-field"><span>Strength <b>{Math.round((element.treatmentStrength ?? 0.62) * 100)}%</b></span><input type="range" min="15" max="90" value={(element.treatmentStrength ?? 0.62) * 100} onChange={(event) => onUpdate({ treatmentStrength: Number(event.target.value) / 100 })} /></label>}
+              <p className="inspector-hint treatment-hint">Colours stay linked to the report palette; changing URL colours refreshes this treatment automatically.</p>
+            </>}
+          </div>
           <NumberField label="Corner radius" min={0} value={element.radius || 0} onChange={(radius) => onUpdate({ radius })} />
           <p className="inspector-hint">Resize with the square handle. Move the image directly on the canvas.</p>
         </div>}

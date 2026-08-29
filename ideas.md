@@ -69,7 +69,7 @@ The wordmark combines a high-contrast editorial serif for “Cover” with a com
 - The editor creates **background artwork only** because the destination platform adds report titles and other document text automatically.
 - Users can add photographs, logos, rectangles, circles, lines, rings, arches, waves, dot fields, and subtle bubble clusters; move, resize, rotate, layer, duplicate, and delete them; choose solid or gradient backgrounds; and export a PNG.
 - A small set of image-led, gradient, and geometric starter compositions demonstrates the tool without locking the user into templates.
-- Report colour schemes can travel in the URL using `primary`, `contrast`, `positive`, `average`, `negative`, and `accent1` through `accent5`; valid values are inherited into named swatches, gradients, and element colouring while missing or invalid values fall back safely.
+- Report colour schemes can travel in the URL using `primary`, `positive`, `average`, `negative`, and `accent1` through `accent5`; valid values are inherited into named swatches, gradients, and element colouring while missing or invalid values fall back safely. Legacy `contrast` values are ignored.
 
 ## Style Decisions
 
@@ -108,3 +108,7 @@ Boardforms green remains concentrated in the connected-company indicator, the se
 ### Bubble Environment Contract
 
 The integration URL uses `bubbleEnv=test|live`, with **test** as the safe fallback for missing, invalid, or `dev` values. Test routes to Bubble’s `version-test` workflow; live routes to the deployed workflow. Both the connected-company status and save button show the active environment, and copied integration URLs preserve it. Live writes are never exercised during automated verification without separate user confirmation.
+
+## Palette-Aware Image Treatments
+
+Images retain their original source and can receive a non-destructive report treatment. **Brand tint** layers one named report colour over photography, **Duotone** maps image shadows and highlights to two named report colours, and **Gradient wash** applies a two-colour palette gradient. Because each treatment refers to a palette role rather than a fixed hex value, changing report colours in the URL recalibrates treated imagery without modifying the source image. The original setting remains one click away, and all treatment layers stay inside the exported SVG composition. The report contract intentionally contains only primary, three rating colours, and five chart accents; text contrast is not required for background artwork.
