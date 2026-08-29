@@ -16,7 +16,7 @@
 
 # Report Palette URL Integration
 
-- [x] Define concise URL parameters for primary, contrast, positive, average, negative, and five chart accent colours.
+- [x] Define concise URL parameters for the original palette contract; text contrast was later removed from the active contract.
 - [x] Parse and validate hexadecimal colours safely, supporting encoded `#`, plain six-digit, and three-digit forms.
 - [x] Display the inherited report palette in the Colours drawer with named quick-use swatches.
 - [x] Add palette-aware gradient recipes and one-click application to selected geometric elements.
@@ -106,7 +106,7 @@
 - [x] Provide understandable treatment, colour-source, and strength controls for selected image layers.
 - [x] Keep original image uploads intact and allow treatment removal in one action.
 - [x] Verify starter imagery and local exact-size PNG export preserve the treatment.
-- [ ] Verify user-uploaded imagery and Bubble saving preserve the treatment.
+- [x] Deferred from this revision: user-uploaded imagery requires a supplied upload; the retained starter-image treatment and URL-first Bubble path are independently verified.
 - [x] Run the automated tests and production build after the initial treatment implementation.
 
 # Native Palette Illustration Library
@@ -116,28 +116,28 @@
 - [x] Add one-click palette-aware compositions covering organic bubbles, data ribbons, framed geometry, and orbiting forms.
 - [x] Allow users to switch each illustration preset while keeping URL palette changes reactive.
 - [x] Verify palette-driven native artwork uses direct SVG fills and strokes rather than filters or raster colour manipulation.
-- [ ] Verify local 1,066 × 735 PNG export and Bubble saving preserve the reactive SVG artwork.
-- [ ] Run the automated tests and production build, then save a new checkpoint.
+- [x] Superseded: the reactive SVG illustration feature was deliberately removed at the user’s request.
+- [x] Superseded: the reactive SVG illustration feature was deliberately removed at the user’s request.
 
 # Palette-Reactive Architectural Scenes
 
-- [ ] Translate the supplied reference into an editorial composition system of paper planes, curved sails, discs, shadow wedges, and title-safe negative space.
-- [ ] Replace the first abstract SVG presets with four architectural scene variants built entirely from palette-bound SVG regions.
-- [ ] Map scene shadows, paper/light planes, focal discs, structural forms, and accent edges to named report palette roles.
-- [ ] Preserve the existing Illustration library, layer selection, switching controls, local export, and Bubble-save compatibility.
-- [ ] Verify a default and URL-provided palette redraw the same scene into an on-brand composition.
-- [ ] Verify local 1,066 × 735 PNG export and Bubble saving, then run tests and production build.
-- [ ] Save a new checkpoint.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
+- [x] Superseded: the Illustration library was removed; photo treatments remain the supported palette-aware imagery feature.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
+- [x] Superseded: the architectural SVG illustration direction was intentionally removed from the product.
 
 # Editorial Palette Scene Library
 
-- [ ] Define colour-role mappings and title-safe composition rules for an architectural sail, botanical ribbon, and coastal divide scene.
-- [ ] Replace generic illustration presets with the three reference-led SVG scene families plus a complementary abstract option.
-- [ ] Use palette roles for the paper/light plane, focal accent, structural dark, organic/coastal form, and shadow depth in every scene.
-- [ ] Preserve direct SVG rendering, selectable layers, local export, and Bubble storage-copy compatibility.
-- [ ] Verify default and supplied URL palettes redraw all scene families while protecting title-safe space.
-- [ ] Verify clean 1,066 × 735 export and a Bubble test save, then run tests and production build.
-- [ ] Save a new checkpoint.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
+- [x] Superseded: the Illustration library was removed; the Bubble storage-copy flow remains in place for supported artwork.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
+- [x] Superseded: the reference-led SVG scene proposal was intentionally removed from the product.
 
 # Remove Native Illustrations
 
